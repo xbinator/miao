@@ -1,0 +1,12 @@
+{
+  "name": "miao",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "dev": "pnpm run dev:chat",
+    "dev:chat": "pnpm --filter @miao/chat dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
