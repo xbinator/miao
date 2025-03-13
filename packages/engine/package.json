@@ -1,0 +1,23 @@
+{
+  "name": "@miao/engine",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.1",
+    "@vue/tsconfig": "^0.7.0",
+    "less": "^4.2.2",
+    "typescript": "~5.7.2",
+    "vite": "^6.2.0",
+    "vue": "^3.5.13",
+    "vue-tsc": "^2.2.4"
+  },
+  "dependencies": {
+    "@types/lodash-es": "^4.17.12",
+    "lodash-es": "^4.17.21"
+  }
+}
