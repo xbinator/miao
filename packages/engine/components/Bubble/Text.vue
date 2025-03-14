@@ -1,5 +1,5 @@
 <template>
-  <Bubble :placement="placement">
+  <Bubble :placement="placement" :avatar="avatar">
     <div :class="[name]">{{ typedContent }}</div>
   </Bubble>
 </template>
@@ -23,7 +23,7 @@ const [name] = createNamespace('bubble-text');
 <style lang="less">
 .m-bubble-text {
   padding: 10px 12px;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 26px;
   color: #333;
 }

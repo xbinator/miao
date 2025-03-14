@@ -4,8 +4,6 @@ type Mod = string | { [key: string]: any };
 type Mods = Mod | Mod[];
 
 function genBem(name: string, mods?: Mods): string {
-  console.log(mods);
-
   if (!mods) {
     return '';
   }
