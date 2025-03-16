@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 
 type Mod = string | { [key: string]: any };
-type Mods = Mod | Mod[];
+export type Mods = Mod | Mod[];
 
 function genBem(name: string, mods?: Mods): string {
   if (!mods) {

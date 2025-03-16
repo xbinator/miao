@@ -11,7 +11,7 @@ export interface TypingOption {
   interval?: number;
 }
 
-export interface BubbleTextProps extends Omit<BubbleProps, 'isTyping'> {
+export interface BubbleTextProps extends Omit<BubbleProps, 'isTyping' | 'status'> {
   typing?: TypingOption | boolean;
 
   content?: string;

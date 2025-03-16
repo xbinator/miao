@@ -5,7 +5,7 @@ import { isString } from 'lodash-es';
 function useTyping(typing: MaybeRefOrGetter<BubbleTextProps['typing']>, content: Ref<string>): [ComputedRef<string>, ComputedRef<boolean>] {
   const typingEnabled = computed(() => !!toValue(typing));
 
-  const baseConfig: Required<TypingOption> = { step: 1, interval: 50 };
+  const baseConfig: Required<TypingOption> = { step: 5, interval: 50 };
 
   const config = computed(() => {
     const typingRaw = toValue(typing);

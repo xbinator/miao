@@ -3,6 +3,8 @@ import { SkillProps } from '../Skill/interface';
 export interface LayoutProps {
   // 占位符
   placeholder?: string;
+  // 发送消息
+  loading?: boolean;
   // 输入内容
   value?: string;
   // 技能

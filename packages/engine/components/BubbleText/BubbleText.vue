@@ -1,5 +1,5 @@
 <template>
-  <Bubble :placement="placement" :avatar="avatar" :loading="loading" :is-typing="isTyping" :toolbar="toolbar">
+  <Bubble :placement="placement" :avatar="avatar" :loading="loading" :status="streamStatus" :toolbar="toolbar" :is-collapse="isCollapse">
     <div :class="[name]">
       <!-- 深度思考 -->
       <div v-if="reasonContent" :class="bem('reason-wrapper')">
@@ -12,7 +12,7 @@
 
       <!-- 回答 -->
       <div>
-        {{ typedContent }}
+        <MessageRender :content="typedContent" />
       </div>
     </div>
   </Bubble>
@@ -25,8 +25,9 @@ import { createNamespace } from '../utils';
 import { Bubble } from '../Bubble';
 import { Icon } from '../Icon';
 import useTyping from './hooks/useTyping';
+import MessageRender from './components/MessageRender.vue';
 
-const props = withDefaults(defineProps<BubbleTextProps>(), { typing: false, content: '', reasonContent: '' });
+const props = withDefaults(defineProps<BubbleTextProps>(), { typing: false, content: '', reasonContent: '', isCollapse: undefined });
 
 const _content = computed(() => props.content);
 
@@ -37,6 +38,8 @@ const [typedContent, isContentTyping] = useTyping(() => props.typing, _content);
 const [typedReasonContent, isReasonContentTyping] = useTyping(() => props.typing, _reasonContent);
 
 const isTyping = computed(() => isContentTyping.value || isReasonContentTyping.value);
+// 只是简单判断本地是否完成打印，后续还需判断接口是否已经返回全部
+const streamStatus = computed(() => (isTyping.value ? 'output' : 'complete'));
 
 const [name, bem] = createNamespace('bubble-text');
 
@@ -49,7 +52,7 @@ function handleReasonCollapse() {
 
 <style lang="less">
 .m-bubble-text {
-  padding: 10px 12px;
+  margin: 10px 12px;
   font-size: 14px;
   line-height: 26px;
   word-break: break-word;
