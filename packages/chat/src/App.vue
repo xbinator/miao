@@ -1,26 +1,26 @@
 <template>
-  <Layout ref="layoutRef">
-    <BubbleText :content="content" loading placement="start" />
+  <MLayout ref="layoutRef">
+    <MBubbleText :content="content" loading placement="start" />
 
-    <BubbleText :content="content" placement="start" />
+    <MBubbleText :content="content" placement="start" />
 
-    <BubbleText :content="content" placement="start" :toolbar="['dislike']" />
+    <MBubbleText :content="content" placement="start" :toolbar="['dislike']" />
 
-    <BubbleText :content="content" placement="start" :toolbar="true" />
+    <MBubbleText :content="content" placement="start" :toolbar="true" />
 
-    <BubbleText :content="content" placement="end" />
+    <MBubbleText :content="content" placement="end" />
 
-    <BubbleText :content="content" placement="end" />
+    <MBubbleText :content="content" placement="end" />
 
-    <BubbleText reason-content="江苏出台15条生育推动政策，①女职工生育津贴不用准备材料再" :content="content" placement="start" />
+    <MBubbleText reason-content="江苏出台15条生育推动政策，①女职工生育津贴不用准备材料再" :content="content" placement="start" />
 
-    <BubbleText :content="md" placement="start" :avatar="{ title: 'Make AI Outstanding' }" is-collapse />
-  </Layout>
+    <MBubbleText :content="md" placement="start" :avatar="{ title: 'Make AI Outstanding' }" is-collapse />
+  </MLayout>
 </template>
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import { BubbleText, Layout } from '@miao/engine';
+import { Layout } from '@miao/engine';
 
 const layoutRef = ref<InstanceType<typeof Layout>>();
 

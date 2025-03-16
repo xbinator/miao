@@ -194,7 +194,9 @@ module.exports = {
     // 该规则不允许continue声明
     'no-continue': 'off',
     // 不允许使用一元运算符++和--
-    'no-plusplus': 'off'
+    'no-plusplus': 'off',
+    //
+    '@typescript-eslint/ban-ts-comment': 'off'
   },
   overrides: [
     {

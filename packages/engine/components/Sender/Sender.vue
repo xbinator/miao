@@ -45,6 +45,8 @@ function handleSend() {
   textarea.value?.blur();
 
   emit('send', input.value);
+
+  input.value = '';
 }
 
 function handleTextareaEvent(event: KeyboardEvent) {

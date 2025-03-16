@@ -13,7 +13,11 @@ export type WithInstall<T> = T & { install(app: App): void } & EventShim;
 
 export function withInstall<T extends Component>(name: string, options: T) {
   (options as Record<string, unknown>).install = (app: App) => {
-    app.component(`M${name}`, options);
+    const _name = `M${name}`;
+
+    options.name = _name;
+
+    app.component(_name, options);
   };
 
   return options as WithInstall<T>;

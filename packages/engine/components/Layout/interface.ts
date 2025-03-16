@@ -5,6 +5,8 @@ export interface LayoutProps {
   placeholder?: string;
   // 发送消息
   loading?: boolean;
+  // 数据加载完成
+  finished?: boolean;
   // 输入内容
   value?: string;
   // 技能

@@ -1,6 +1,6 @@
 <template>
   <div :class="name">
-    <PullRefresh ref="PullRefreshRef" v-model:value="isRefresh" :class="bem('main')" @refresh="handleRefresh">
+    <PullRefresh ref="PullRefreshRef" v-model:value="isRefresh" :disabled="disabled.refresh" :class="bem('main')" @refresh="handleLoadData">
       <div ref="containerRef" :class="bem('container')">
         <slot></slot>
       </div>
@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { reactive, ref } from 'vue';
 import { useEventListener } from '@vueuse/core';
 import { isBoolean } from 'lodash-es';
 import { createNamespace } from '../utils';
@@ -40,9 +40,9 @@ import useResizeScroll from './hooks/useResizeScroll';
 import { LayoutProps } from './interface';
 import ToBottomButton from './components/ToBottomButton.vue';
 
-const props = withDefaults(defineProps<LayoutProps>(), { useDeepThink: false, useNetSearch: false, loading: false });
+const props = withDefaults(defineProps<LayoutProps>(), { useDeepThink: false, useNetSearch: false, loading: false, finished: false });
 
-const emit = defineEmits(['refresh', 'message-send', 'message-cancel']);
+const emit = defineEmits(['load', 'message-send', 'message-cancel']);
 
 const isRefresh = defineModel<boolean>('isRefresh', { default: false });
 
@@ -52,12 +52,15 @@ const containerRef = ref<HTMLElement>();
 
 const [name, bem] = createNamespace('layout');
 
+const disabled = reactive({ refresh: false });
+
 useDisableOverscroll();
 
 const activated = ref('');
 
 const isBackBottom = ref(false);
 const BACK_BOTTOM_HEIGHT = 300;
+const SCROLL_TOP_HEIGHT = 100;
 
 function setScrollBottom(options?: { value?: number; behavior?: 'smooth' | 'auto'; delay?: boolean | number }) {
   const el = PullRefreshRef.value?.$el;
@@ -73,12 +76,14 @@ function setScrollBottom(options?: { value?: number; behavior?: 'smooth' | 'auto
   }
 }
 
-function handleRefresh() {
-  emit('refresh');
+function handleLoadData() {
+  if (props.finished) return;
+
+  emit('load');
 }
 
-function handleMessageSend() {
-  emit('message-send');
+function handleMessageSend(value: string) {
+  emit('message-send', value);
 }
 
 function handleMessageCancel() {
@@ -89,8 +94,12 @@ function handleEventScroll() {
   const el = PullRefreshRef.value?.$el;
 
   if (!el) return;
-
+  // 回到底部
   isBackBottom.value = el.scrollHeight - (el.scrollTop | 0) - el.clientHeight > BACK_BOTTOM_HEIGHT;
+  // 加载数据
+  if (el.scrollTop < SCROLL_TOP_HEIGHT && !disabled.refresh) {
+    handleLoadData();
+  }
 }
 
 useEventListener(() => PullRefreshRef.value?.$el, 'scroll', handleEventScroll);

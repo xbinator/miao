@@ -11,7 +11,7 @@
       @touchend="onTouchEnd"
       @touchcancel="onTouchEnd"
     >
-      <div :class="[bem('head', state.status)]">
+      <div v-if="!disabled" :class="[bem('head', state.status)]">
         <template v-if="['normal', 'pulling'].includes(state.status)">下拉查看历史消息</template>
         <template v-else-if="state.status === 'loading'">加载中...</template>
         <template v-else-if="state.status === 'loosing'">释放即可刷新...</template>
