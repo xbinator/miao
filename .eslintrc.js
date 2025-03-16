@@ -31,7 +31,7 @@ module.exports = {
   },
   rules: {
     'no-console': 'off',
-    'max-len': ['error', { code: 120 }],
+    'max-len': ['error', { code: 160 }],
     'no-underscore-dangle': 'off',
     // export 要有 default
     'import/prefer-default-export': 'off',

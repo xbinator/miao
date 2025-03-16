@@ -10,6 +10,7 @@
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.1",
     "@vue/tsconfig": "^0.7.0",
+    "install": "^0.13.0",
     "less": "^4.2.2",
     "typescript": "~5.7.2",
     "vite": "^6.2.0",
@@ -17,11 +18,10 @@
     "vue-tsc": "^2.2.4"
   },
   "dependencies": {
-    "@ant-design/icons-vue": "^7.0.1",
     "@types/lodash-es": "^4.17.12",
     "@vueuse/core": "^13.0.0",
-    "ant-design-vue": "^4.2.6",
     "lodash-es": "^4.17.21",
+    "marked": "^15.0.7",
     "perfect-scrollbar": "^1.5.6"
   }
 }

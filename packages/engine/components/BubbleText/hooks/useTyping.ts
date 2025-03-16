@@ -1,8 +1,8 @@
 import type { TypingOption, BubbleTextProps } from '../interface';
-import { computed, toValue, type MaybeRefOrGetter, Ref, ref, watch, unref, onWatcherCleanup } from 'vue';
+import { computed, toValue, type MaybeRefOrGetter, Ref, ref, watch, unref, onWatcherCleanup, ComputedRef } from 'vue';
 import { isString } from 'lodash-es';
 
-function useTyping(typing: MaybeRefOrGetter<BubbleTextProps['typing']>, content: Ref<string>) {
+function useTyping(typing: MaybeRefOrGetter<BubbleTextProps['typing']>, content: Ref<string>): [ComputedRef<string>, ComputedRef<boolean>] {
   const typingEnabled = computed(() => !!toValue(typing));
 
   const baseConfig: Required<TypingOption> = { step: 1, interval: 50 };
@@ -52,7 +52,9 @@ function useTyping(typing: MaybeRefOrGetter<BubbleTextProps['typing']>, content:
 
   const mergedContent = computed(() => (isEnabled.value ? content.value.slice(0, typingIndex.value) : content.value));
 
-  return [mergedContent, computed(() => isEnabled.value && unref(typingIndex) < content.value.length)];
+  const isTyping = computed(() => isEnabled.value && unref(typingIndex) < content.value.length);
+
+  return [mergedContent, isTyping];
 }
 
 export default useTyping;

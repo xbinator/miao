@@ -1,6 +1,4 @@
-import { defineAsyncComponent } from 'vue';
 import { withInstall } from '../utils/with-install';
+import _Bubble from './Bubble.vue';
 
-const _BubbleText = defineAsyncComponent(() => import('./Text.vue'));
-
-export const BubbleText = withInstall('BubbleText', _BubbleText);
+export const Bubble = withInstall('Bubble', _Bubble);

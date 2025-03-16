@@ -1,6 +1,6 @@
 module.exports = {
   // 单行代码的最大宽度
-  printWidth: 120,
+  printWidth: 160,
   // 指定每个缩进级别的空格数
   tabWidth: 2,
   // 使用制表符 (tab) 缩进

@@ -1,20 +1,16 @@
 <template>
   <div :class="name">
-    <Avatar :src="src" :size="size">
-      <template #icon><UserOutlined /></template>
-    </Avatar>
+    <img :src="src" :class="bem('image')" />
 
     <div :class="bem('text')">{{ title }}</div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { Avatar } from 'ant-design-vue';
-import { UserOutlined } from '@ant-design/icons-vue';
 import { createNamespace } from '../utils';
 import { BubbleAvatarProps } from './interface';
 
-withDefaults(defineProps<BubbleAvatarProps>(), { title: '', src: '', size: 22 });
+withDefaults(defineProps<BubbleAvatarProps>(), { title: '', src: '' });
 
 const [name, bem] = createNamespace('bubble-avatar');
 </script>
@@ -23,6 +19,11 @@ const [name, bem] = createNamespace('bubble-avatar');
 .m-bubble-avatar {
   display: flex;
   align-items: center;
+}
+
+.m-bubble-avatar__image {
+  width: 22px;
+  height: 22px;
 }
 
 .m-bubble-avatar__text {
