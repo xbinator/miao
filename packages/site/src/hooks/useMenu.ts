@@ -1,14 +1,27 @@
 import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { groupBy, sortBy } from 'lodash-es';
 
 export interface MenuItem {
   // 标题
   title: string;
   // 路径
   path: string;
-  // 子菜单
-  children?: MenuItem[];
 }
+
+export interface MenuGroup {
+  // 标题
+  title: string;
+  // 排序
+  order: number;
+  // 子菜单
+  children: MenuItem[];
+}
+
+const typeOrder = {
+  组件总览: { order: -1 },
+  通用: { order: 0 }
+};
 
 export function useMenu() {
   const route = useRoute();
@@ -28,5 +41,21 @@ export function useMenu() {
 
   const activeMenuItem = computed(() => route.path);
 
-  return { menus, activeMenuItem };
+  const currentMenuItem = computed(() => {
+    return menus.value.find((m) => m.path === activeMenuItem.value);
+  });
+
+  const dataSource = computed(() => {
+    const group = groupBy(menus.value, (m: any) => m.category);
+
+    const keys: string[] = Object.keys(group);
+
+    const newMenus = keys
+      .map((key) => ({ title: key, order: typeOrder[key]?.order, children: sortBy(group[key], 'title') }))
+      .sort((a, b) => a.order - b.order) as MenuGroup[];
+
+    return keys.length === 1 ? menus.value : newMenus;
+  });
+
+  return { menus, dataSource, activeMenuItem, currentMenuItem };
 }

@@ -23,10 +23,12 @@
 
     <div :class="$style.layout__main">
       <div :class="$style.layout__aside">
-        <Menu :menus="menus" :active-menu-item="activeMenuItem" />
+        <Menu :menus="dataSource" :active-menu-item="activeMenuItem" />
       </div>
 
       <div :class="$style.layout__main__content">
+        <div :class="$style.layout__main__content__title">{{ currentMenuItem?.title }}</div>
+
         <RouterView />
       </div>
     </div>
@@ -45,7 +47,7 @@ const nav = [
   { label: '演示', value: 'playground' }
 ];
 
-const { menus, activeMenuItem } = useMenu();
+const { dataSource, activeMenuItem, currentMenuItem } = useMenu();
 
 const activeNav = computed(() => activeMenuItem.value.split('/').at(1));
 </script>
@@ -148,6 +150,12 @@ const activeNav = computed(() => activeMenuItem.value.split('/').at(1));
   flex: 1;
   width: 0;
   padding: 30px 164px 40px 48px;
+
+  .layout__main__content__title {
+    margin-bottom: 16px;
+    font-weight: 500;
+    font-size: 30px;
+  }
 
   h1 {
     margin-top: 8px;

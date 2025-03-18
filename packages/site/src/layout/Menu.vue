@@ -1,8 +1,8 @@
 <template>
   <AMenu class="aside-container" mode="inline" :selected-keys="[activeMenuItem]">
-    <template v-for="item in menus" :key="item.path">
-      <AMenuItemGroup v-if="item.children" :title="item.title">
-        <AMenuItem v-for="child in item.children" :key="child.path">
+    <template v-for="item in menus" :key="item.title">
+      <AMenuItemGroup v-if="(item as MenuGroup).children" :title="item.title">
+        <AMenuItem v-for="child in (item as MenuGroup).children" :key="child.path">
           <RouterLink :to="child.path"> {{ child.title }} </RouterLink>
         </AMenuItem>
       </AMenuItemGroup>
@@ -15,10 +15,10 @@
 </template>
 
 <script setup lang="ts">
-import type { MenuItem } from '@/hooks/useMenu';
+import type { MenuItem, MenuGroup } from '@/hooks/useMenu';
 
 interface Props {
-  menus?: MenuItem[];
+  menus?: MenuItem[] | MenuGroup[];
   // 当前选中的菜单
   activeMenuItem?: string;
 }

@@ -4,7 +4,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/docs',
     component: () => import('@/layout/index.vue'),
-    redirect: '/docs/getting-started',
+    redirect: '/docs/introduce',
     children: [
       {
         path: 'introduce',
@@ -26,12 +26,12 @@ const routes: RouteRecordRaw[] = [
       {
         path: 'overview',
         component: () => import('@/views/components/overview/index.md'),
-        meta: { title: '组件总览' }
+        meta: { title: '组件总览', category: '组件总览' }
       },
       {
         path: '331',
         component: () => import('@/views/components/bubble/index.md'),
-        meta: { title: 'bubble' }
+        meta: { title: 'bubble', category: '通用' }
       }
     ]
   },

@@ -1,11 +1,11 @@
 import type { TypingOption, BubbleTextProps } from '../interface';
-import { computed, toValue, type MaybeRefOrGetter, Ref, ref, watch, unref, onWatcherCleanup, ComputedRef } from 'vue';
+import { computed, toValue, type MaybeRefOrGetter, Ref, ref, watch, unref, ComputedRef } from 'vue';
 import { isString } from 'lodash-es';
 
 function useTyping(typing: MaybeRefOrGetter<BubbleTextProps['typing']>, content: Ref<string>): [ComputedRef<string>, ComputedRef<boolean>] {
   const typingEnabled = computed(() => !!toValue(typing));
 
-  const baseConfig: Required<TypingOption> = { step: 5, interval: 50 };
+  const baseConfig: Required<TypingOption> = { step: 1, interval: 50 };
 
   const config = computed(() => {
     const typingRaw = toValue(typing);
@@ -22,7 +22,19 @@ function useTyping(typing: MaybeRefOrGetter<BubbleTextProps['typing']>, content:
 
   const isEnabled = computed(() => typingEnabled.value && isString(content.value));
 
-  let Timer: number;
+  let Timer: number | null = null;
+
+  function startTypingTimer() {
+    typingIndex.value = unref(typingIndex) + typingStep.value;
+
+    Timer = null;
+  }
+
+  function closeTypingTimer() {
+    Timer && clearTimeout(Timer);
+
+    Timer = null;
+  }
 
   watch(content, () => {
     const prevContentValue = unref(prevContent);
@@ -34,17 +46,17 @@ function useTyping(typing: MaybeRefOrGetter<BubbleTextProps['typing']>, content:
     } else if (isString(content.value) && isString(prevContentValue) && content.value.indexOf(prevContentValue) !== 0) {
       typingIndex.value = 1;
 
-      clearTimeout(Timer);
+      closeTypingTimer();
     }
   });
 
   watch(
     [typingIndex, typingEnabled, content],
     () => {
+      // 启用打字机功能
       if (isEnabled.value && isString(content.value) && unref(typingIndex) < content.value.length) {
-        Timer = setTimeout(() => (typingIndex.value = unref(typingIndex) + typingStep.value), typingInterval.value);
-
-        onWatcherCleanup(() => clearTimeout(Timer));
+        // 定时打印
+        !Timer && (Timer = setTimeout(startTypingTimer, typingInterval.value));
       }
     },
     { immediate: true }
