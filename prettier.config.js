@@ -16,5 +16,5 @@ module.exports = {
   // 将 > 多行 JSX 元素放在最后一行的末尾，而不是单独放在下一行（不适用于自闭元素）。
   jsxBracketSameLine: false,
   // auto | lf | crlf | cr
-  endOfLine: 'lf'
+  endOfLine: 'auto'
 };

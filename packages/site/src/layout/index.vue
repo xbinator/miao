@@ -10,28 +10,44 @@
       </div>
 
       <div :class="$style.layout__header__nav">
-        <div v-for="item in nav" :key="item.value" :class="$style.layout__header__nav__item">
+        <RouterLink
+          v-for="item in nav"
+          :key="item.value"
+          :class="[$style.layout__nav__item, { [$style.active]: item.value === activeNav }]"
+          :to="`/${item.value}`"
+        >
           {{ item.label }}
-        </div>
+        </RouterLink>
       </div>
     </div>
 
     <div :class="$style.layout__main">
       <div :class="$style.layout__aside">
-        <Menu />
+        <Menu :menus="menus" :active-menu-item="activeMenuItem" />
+      </div>
+
+      <div :class="$style.layout__main__content">
+        <RouterView />
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
+import { RouterLink } from 'vue-router';
 import Menu from './Menu.vue';
+import { useMenu } from '@/hooks/useMenu';
 
 const nav = [
   { label: '文档', value: 'docs' },
   { label: '组件', value: 'components' },
   { label: '演示', value: 'playground' }
 ];
+
+const { menus, activeMenuItem } = useMenu();
+
+const activeNav = computed(() => activeMenuItem.value.split('/').at(1));
 </script>
 
 <style lang="less" module>
@@ -69,6 +85,7 @@ const nav = [
   line-height: 1;
   color: #fff;
   background-color: #0cbf64;
+  user-select: none;
 }
 
 .layout__header__title {
@@ -93,7 +110,6 @@ const nav = [
   border-radius: 24px;
   font-size: 16px;
   white-space: nowrap;
-  color: rgba(0, 0, 0, 0.65);
   background-color: linear-gradient(117deg, #ffffff1a 17%, #ffffff0d 51%);
   box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
   transform: translate(-50%, -50%);
@@ -101,7 +117,8 @@ const nav = [
   gap: 24px;
 }
 
-.layout__header__nav__item {
+.layout__nav__item {
+  color: rgba(0, 0, 0, 0.55);
   cursor: pointer;
 
   &:hover {
@@ -125,6 +142,60 @@ const nav = [
   max-width: 350px;
   height: 100%;
   background-color: #fff;
-  // border-right: 1px solid rgba(5, 5, 5, 0.06);
+}
+
+.layout__main__content {
+  flex: 1;
+  width: 0;
+  padding: 30px 164px 40px 48px;
+
+  h1 {
+    margin-top: 8px;
+    margin-bottom: 20px;
+    font-weight: 500;
+    font-size: 30px;
+    line-height: 38px;
+    color: #333;
+  }
+
+  h2 {
+    margin: 48px 0 16px;
+    font-size: 24px;
+    line-height: 32px;
+  }
+
+  p {
+    margin: 16px 0;
+    line-height: 28px;
+  }
+
+  ul,
+  ol {
+    padding-left: 20px;
+    margin: 8px 0;
+  }
+
+  ol li {
+    list-style: decimal;
+  }
+
+  ul li {
+    list-style: disc;
+  }
+
+  :global(.anchor) {
+    color: #00b96b;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  h1,
+  h2 {
+    &:hover {
+      :global(.anchor) {
+        opacity: 1;
+      }
+    }
+  }
 }
 </style>

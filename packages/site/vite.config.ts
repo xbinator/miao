@@ -4,6 +4,8 @@ import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 import Components from 'unplugin-vue-components/vite';
 import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
+import Markdown from 'vite-plugin-md';
+import markdownItAnchor from 'markdown-it-anchor';
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -25,8 +27,20 @@ export default defineConfig({
   },
 
   plugins: [
-    vue(),
+    vue({ include: [/\.vue$/, /\.md$/] }),
     vueJsx(),
+    Markdown({
+      markdownItSetup(md) {
+        md.use(markdownItAnchor, {
+          permalink: markdownItAnchor.permalink.ariaHidden({
+            placement: 'after', // 在标题前显示锚点
+            symbol: '#', // 锚点符号
+            class: 'anchor' // 自定义 CSS 类
+          }),
+          slugify: (s) => s.trim().toLowerCase() // 处理中文标题的 URL
+        });
+      }
+    }),
     // @ts-ignore
     Components({
       include: [/\.vue$/, /\.vue\?vue/],

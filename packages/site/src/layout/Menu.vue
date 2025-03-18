@@ -1,17 +1,35 @@
 <template>
-  <AMenu class="aside-container" mode="inline">
-    <AMenuItemGroup title="通用">
-      <AMenuItem>dd</AMenuItem>
-    </AMenuItemGroup>
+  <AMenu class="aside-container" mode="inline" :selected-keys="[activeMenuItem]">
+    <template v-for="item in menus" :key="item.path">
+      <AMenuItemGroup v-if="item.children" :title="item.title">
+        <AMenuItem v-for="child in item.children" :key="child.path">
+          <RouterLink :to="child.path"> {{ child.title }} </RouterLink>
+        </AMenuItem>
+      </AMenuItemGroup>
+
+      <AMenuItem v-else :key="item.path">
+        <RouterLink :to="item.path"> {{ item.title }} </RouterLink>
+      </AMenuItem>
+    </template>
   </AMenu>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import type { MenuItem } from '@/hooks/useMenu';
+
+interface Props {
+  menus?: MenuItem[];
+  // 当前选中的菜单
+  activeMenuItem?: string;
+}
+
+withDefaults(defineProps<Props>(), { menus: () => [], activeMenuItem: '' });
+</script>
 
 <style lang="less">
 .aside-container {
   min-height: 100%;
-  padding-bottom: 48px;
+  padding: 80px 0 48px;
 
   &.ant-menu-inline {
     .ant-menu-submenu-title h4,
