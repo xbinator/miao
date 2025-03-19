@@ -12,6 +12,10 @@ basic
 avatar-and-placement
 :::
 
+:::demo 打字效果
+typing
+:::
+
 :::demo 支持展开与收起
 expand-and-collapse
 :::
