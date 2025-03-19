@@ -24,3 +24,5 @@ pnpm-debug.log*
 
 auto-imports.d.ts
 components.d.ts
+
+packages/site/src/router/demo-routes.ts

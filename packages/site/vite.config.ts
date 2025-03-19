@@ -7,6 +7,7 @@ import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
 import Markdown from 'vite-plugin-md';
 import markdownItAnchor from 'markdown-it-anchor';
 import MarkdownTransform from './plugins/markdown-transform';
+import MarkdownRoutes from './plugins/markdown-routes';
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -30,6 +31,7 @@ export default defineConfig({
   plugins: [
     vue({ include: [/\.vue$/, /\.md$/] }),
     vueJsx(),
+    MarkdownRoutes('views/components'),
     MarkdownTransform(),
     Markdown({
       markdownItSetup: async (md) => {

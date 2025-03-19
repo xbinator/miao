@@ -12,3 +12,5 @@ dist
 .husky
 .local
 /bin
+
+packages/site/src/router/demo-routes.ts
