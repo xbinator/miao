@@ -5,7 +5,7 @@
         <slot></slot>
       </div>
     </PullRefresh>
-
+    <!-- 回到底部 -->
     <ToBottomButton :visible="isBackBottom" @click="setScrollBottom" />
 
     <div :class="bem('footer')">
@@ -27,16 +27,14 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue';
+import { reactive, ref, nextTick } from 'vue';
 import { useEventListener } from '@vueuse/core';
-import { isBoolean } from 'lodash-es';
 import { createNamespace } from '../utils';
 import { Sender } from '../Sender';
 import { SkillList } from '../Skill';
 import { AttachmentTool } from '../Attachment';
 import { PullRefresh } from '../PullRefresh';
 import useDisableOverscroll from './hooks/useDisableOverscroll';
-import useResizeScroll from './hooks/useResizeScroll';
 import { LayoutProps } from './interface';
 import ToBottomButton from './components/ToBottomButton.vue';
 
@@ -62,18 +60,14 @@ const isBackBottom = ref(false);
 const BACK_BOTTOM_HEIGHT = 300;
 const SCROLL_TOP_HEIGHT = 100;
 
-function setScrollBottom(options?: { value?: number; behavior?: 'smooth' | 'auto'; delay?: boolean | number }) {
+function setScrollBottom(options?: { value?: number; behavior?: 'smooth' | 'auto' }) {
   const el = PullRefreshRef.value?.$el;
 
   if (!el) return;
 
-  const _options = { top: el.scrollHeight - (options?.value || 0), behavior: options?.behavior };
+  const _options = { top: 0, behavior: options?.behavior };
 
-  if (options?.delay) {
-    setTimeout(() => el.scrollTo(_options), isBoolean(options.delay) ? 0 : options.delay);
-  } else {
-    el.scrollTo(_options);
-  }
+  nextTick(() => el.scrollTo(_options));
 }
 
 function handleLoadData() {
@@ -94,8 +88,9 @@ function handleEventScroll() {
   const el = PullRefreshRef.value?.$el;
 
   if (!el) return;
+
   // 回到底部
-  isBackBottom.value = el.scrollHeight - (el.scrollTop | 0) - el.clientHeight > BACK_BOTTOM_HEIGHT;
+  isBackBottom.value = Math.abs(el.scrollTop) > BACK_BOTTOM_HEIGHT;
   // 加载数据
   if (el.scrollTop < SCROLL_TOP_HEIGHT && !disabled.refresh) {
     handleLoadData();
@@ -103,8 +98,6 @@ function handleEventScroll() {
 }
 
 useEventListener(() => PullRefreshRef.value?.$el, 'scroll', handleEventScroll);
-
-useResizeScroll(props.loading, containerRef, () => setScrollBottom({ behavior: 'smooth' }));
 
 defineExpose({ setScrollBottom });
 </script>
@@ -118,8 +111,10 @@ defineExpose({ setScrollBottom });
 }
 
 .m-layout__main {
+  display: flex;
+  flex-direction: column-reverse;
   height: 100%;
-  overflow: auto;
+  overflow-y: auto;
 
   &::-webkit-scrollbar {
     display: block;
@@ -132,6 +127,11 @@ defineExpose({ setScrollBottom });
     border-radius: 2px;
     background: rgba(63, 63, 63, 0.2);
   }
+}
+
+.m-layout__container {
+  flex: 1;
+  height: 0;
 }
 
 .m-layout__footer {

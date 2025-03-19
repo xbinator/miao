@@ -4,6 +4,7 @@
       ref="track"
       :class="bem('track')"
       :style="{
+        paddingBottom: `${state.distance}px`,
         transitionDuration: `${state.duration}ms`,
         transform: state.distance ? `translate3d(0,${state.distance}px, 0)` : ''
       }"
@@ -92,7 +93,9 @@ function setStatus(distance: number, isLoading?: boolean) {
 function checkPosition(event: TouchEvent) {
   if (!scrollParent.value) return;
 
-  reachTop = getScrollTop(scrollParent.value) === 0;
+  const { scrollHeight, clientHeight } = scrollParent.value as HTMLElement;
+
+  reachTop = getScrollTop(scrollParent.value) === scrollHeight - clientHeight;
 
   if (reachTop) {
     state.duration = 0;
@@ -164,7 +167,9 @@ useEventListener(track, 'touchmove', onTouchMove);
 
 .m-pull-refresh__track {
   position: relative;
-  height: 100%;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
   transition-property: transform;
 }
 

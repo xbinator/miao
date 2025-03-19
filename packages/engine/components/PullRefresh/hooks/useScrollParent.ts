@@ -26,7 +26,7 @@ export function getScrollParent(el: HTMLElement, root: ScrollElement | undefined
 export function getScrollTop(el: ScrollElement): number {
   const top = 'scrollTop' in el ? el.scrollTop : el.pageYOffset;
 
-  return Math.max(top, 0);
+  return Math.max(Math.ceil(Math.abs(top)), 0);
 }
 
 export function useScrollParent(el: Ref<HTMLElement | undefined>, root: ScrollElement | undefined = window) {
