@@ -5,27 +5,33 @@
     <div :class="bem('main')">
       <slot name="header"></slot>
 
-      <div v-if="loading" :class="bem('container')">
-        <Loading />
+      <div v-if="loading && placement === 'start'" :class="bem('container')">
+        <Loading type="dot" />
       </div>
 
       <template v-else>
-        <div :class="bem('container')">
-          <div ref="contentRef" :class="bem('content', { collapse: collapse.value })">
-            <slot></slot>
-          </div>
+        <div :class="bem('section')">
+          <template v-if="placement === 'end'">
+            <Loading v-if="loading" type="circle" :class="bem('loading')" />
+          </template>
 
-          <div v-if="placement === 'start' && collapse.visible && isCollapse" :class="bem('collapse', { active: collapse.value })">
-            <button :class="bem('collapse-button')" @click="toggleCollapse">
-              <div :class="bem('collapse-text')">
-                {{ collapse.value ? '展开查看全部' : '收起' }}
-              </div>
-              <Icon type="&#xe69b;" :class="bem('collapse-icon')" :rotate="collapse.value ? 0 : 180" />
-            </button>
+          <div :class="bem('container')">
+            <div ref="contentRef" :class="bem('content', { collapse: collapse.value })">
+              <slot></slot>
+            </div>
+
+            <div v-if="placement === 'start' && collapse.visible && isCollapse" :class="bem('collapse', { active: collapse.value })">
+              <button :class="bem('collapse-button')" @click="toggleCollapse">
+                <div :class="bem('collapse-text')">
+                  {{ collapse.value ? '展开查看全部' : '收起' }}
+                </div>
+                <Icon type="&#xe69b;" :class="bem('collapse-icon')" :rotate="collapse.value ? 0 : 180" />
+              </button>
+            </div>
           </div>
         </div>
         <!-- 底部工具栏 -->
-        <Toolbar v-if="status === 'complete'" :toolbar="toolbar" />
+        <Toolbar v-if="status === 'complete' && placement === 'start'" :toolbar="toolbar" />
       </template>
     </div>
   </div>
@@ -48,7 +54,7 @@ const [, bem] = createNamespace('bubble');
 
 const contentRef = ref<HTMLDivElement>();
 
-const { collapse, toggleCollapse } = useCollapse(contentRef, 200, () => props.status);
+const { collapse, toggleCollapse } = useCollapse(contentRef, 200, () => ({ status: props.status, isCollapse: props.isCollapse }));
 </script>
 
 <style lang="less">
@@ -66,19 +72,35 @@ const { collapse, toggleCollapse } = useCollapse(contentRef, 200, () => props.st
 }
 
 .m-bubble--end {
-  flex-direction: row-reverse;
-  justify-content: end;
+  align-items: flex-end;
 
   .m-bubble__container {
     border-radius: 12px 2px 12px 12px;
     color: #fff;
     background: rgb(var(--miao-primary-color-value));
   }
+
+  .m-bubble__avatar {
+    flex-direction: row-reverse;
+  }
+
+  .m-bubble-avatar__text {
+    margin-right: 10px;
+  }
+
+  .m-bubble__loading {
+    margin-right: 10px;
+  }
 }
 
 .m-bubble__main {
   display: flex;
   flex-direction: column;
+}
+
+.m-bubble__section {
+  display: flex;
+  align-items: center;
 }
 
 .m-bubble__container {
@@ -113,10 +135,6 @@ const { collapse, toggleCollapse } = useCollapse(contentRef, 200, () => props.st
       content: '';
     }
   }
-
-  //   width: 351px;
-  // height: 28px;
-  //
 }
 
 .m-bubble__collapse-button {

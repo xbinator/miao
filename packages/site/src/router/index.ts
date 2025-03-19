@@ -29,9 +29,14 @@ const routes: RouteRecordRaw[] = [
         meta: { title: '组件总览', category: '组件总览' }
       },
       {
-        path: '331',
+        path: 'bubble',
         component: () => import('@/views/components/bubble/index.md'),
-        meta: { title: 'bubble', category: '通用' }
+        meta: { title: 'Bubble 气泡容器', category: '通用' }
+      },
+      {
+        path: 'bubbleText',
+        component: () => import('@/views/components/bubbleText/index.md'),
+        meta: { title: 'bubbleText 文本对话气泡', category: '通用' }
       }
     ]
   },

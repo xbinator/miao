@@ -26,10 +26,12 @@
         <Menu :menus="dataSource" :active-menu-item="activeMenuItem" />
       </div>
 
-      <div :class="$style.layout__main__content">
-        <div :class="$style.layout__main__content__title">{{ currentMenuItem?.title }}</div>
+      <div :class="$style.layout__main__container">
+        <div :class="$style.layout__main__content">
+          <div :class="$style.layout__main__content__title">{{ currentMenuItem?.title }}</div>
 
-        <RouterView />
+          <RouterView />
+        </div>
       </div>
     </div>
   </div>
@@ -146,9 +148,27 @@ const activeNav = computed(() => activeMenuItem.value.split('/').at(1));
   background-color: #fff;
 }
 
-.layout__main__content {
+.layout__main__container {
   flex: 1;
   width: 0;
+  overflow: auto;
+
+  &::-webkit-scrollbar {
+    display: block;
+    width: 10px;
+    height: 12px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    display: block;
+    border-radius: 4px;
+    background: rgba(63, 63, 63, 0.2);
+  }
+}
+
+.layout__main__content {
+  width: 100%;
+  max-width: 1200px;
   padding: 30px 164px 40px 48px;
 
   .layout__main__content__title {

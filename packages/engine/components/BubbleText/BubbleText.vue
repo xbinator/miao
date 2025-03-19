@@ -11,9 +11,7 @@
       </div>
 
       <!-- 回答 -->
-      <div>
-        <MessageRender :content="typedContent" />
-      </div>
+      <MessageRender :content="typedContent" />
     </div>
   </Bubble>
 </template>

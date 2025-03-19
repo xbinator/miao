@@ -7,8 +7,8 @@
         </AMenuItem>
       </AMenuItemGroup>
 
-      <AMenuItem v-else :key="item.path">
-        <RouterLink :to="item.path"> {{ item.title }} </RouterLink>
+      <AMenuItem v-else :key="(item as MenuItem).path">
+        <RouterLink :to="(item as MenuItem).path"> {{ item.title }} </RouterLink>
       </AMenuItem>
     </template>
   </AMenu>

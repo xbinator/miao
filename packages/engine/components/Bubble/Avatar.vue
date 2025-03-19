@@ -24,6 +24,7 @@ const [name, bem] = createNamespace('bubble-avatar');
 .m-bubble-avatar__image {
   width: 22px;
   height: 22px;
+  border-radius: 50%;
 }
 
 .m-bubble-avatar__text {

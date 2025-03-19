@@ -1,6 +1,6 @@
 import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { groupBy, sortBy } from 'lodash-es';
+import { flatMap, groupBy, sortBy } from 'lodash-es';
 
 export interface MenuItem {
   // 标题
@@ -52,9 +52,10 @@ export function useMenu() {
 
     const newMenus = keys
       .map((key) => ({ title: key, order: typeOrder[key]?.order, children: sortBy(group[key], 'title') }))
-      .sort((a, b) => a.order - b.order) as MenuGroup[];
+      .sort((a, b) => a.order - b.order)
+      .map((m) => (m.order === -1 ? m.children : m)) as MenuGroup[];
 
-    return keys.length === 1 ? menus.value : newMenus;
+    return keys.length === 1 ? menus.value : flatMap(newMenus, (m) => m);
   });
 
   return { menus, dataSource, activeMenuItem, currentMenuItem };

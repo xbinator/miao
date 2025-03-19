@@ -6,6 +6,7 @@ import Components from 'unplugin-vue-components/vite';
 import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
 import Markdown from 'vite-plugin-md';
 import markdownItAnchor from 'markdown-it-anchor';
+import MarkdownTransform from './plugins/markdown-transform';
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -29,8 +30,9 @@ export default defineConfig({
   plugins: [
     vue({ include: [/\.vue$/, /\.md$/] }),
     vueJsx(),
+    MarkdownTransform(),
     Markdown({
-      markdownItSetup(md) {
+      markdownItSetup: async (md) => {
         md.use(markdownItAnchor, {
           permalink: markdownItAnchor.permalink.ariaHidden({
             placement: 'after', // 在标题前显示锚点
