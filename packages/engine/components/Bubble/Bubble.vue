@@ -31,7 +31,7 @@
           </div>
         </div>
         <!-- 底部工具栏 -->
-        <Toolbar v-if="status === 'complete' && placement === 'start'" :toolbar="toolbar" />
+        <Toolbar v-if="status === 'complete' && placement === 'start'" :toolbar="toolbar" @action="handleToolAction" />
       </template>
     </div>
   </div>
@@ -50,11 +50,17 @@ import useCollapse from './hooks/useCollapse';
 
 const props = withDefaults(defineProps<BubbleProps>(), { placement: 'start', avatar: undefined, status: 'complete', isCollapse: false });
 
+const emit = defineEmits(['tool-action']);
+
 const [, bem] = createNamespace('bubble');
 
 const contentRef = ref<HTMLDivElement>();
 
 const { collapse, toggleCollapse } = useCollapse(contentRef, 200, () => ({ status: props.status, isCollapse: props.isCollapse }));
+
+function handleToolAction(action: string) {
+  emit('tool-action', action);
+}
 </script>
 
 <style lang="less">
