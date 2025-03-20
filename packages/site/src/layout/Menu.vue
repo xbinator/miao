@@ -3,12 +3,12 @@
     <template v-for="item in menus" :key="item.title">
       <AMenuItemGroup v-if="(item as MenuGroup).children" :title="item.title">
         <AMenuItem v-for="child in (item as MenuGroup).children" :key="child.path">
-          <RouterLink :to="child.path"> {{ child.title }} </RouterLink>
+          <RouterLink :to="child.path"> {{ child.title }} {{ child.subtitle }}</RouterLink>
         </AMenuItem>
       </AMenuItemGroup>
 
       <AMenuItem v-else :key="(item as MenuItem).path">
-        <RouterLink :to="(item as MenuItem).path"> {{ item.title }} </RouterLink>
+        <RouterLink :to="(item as MenuItem).path"> {{ item.title }} {{ (item as MenuItem).subtitle }} </RouterLink>
       </AMenuItem>
     </template>
   </AMenu>

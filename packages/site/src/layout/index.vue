@@ -170,6 +170,7 @@ const activeNav = computed(() => activeMenuItem.value.split('/').at(1));
   width: 100%;
   max-width: 1200px;
   padding: 30px 164px 40px 48px;
+  margin: 0 auto;
 
   .layout__main__content__title {
     margin-bottom: 16px;
@@ -178,7 +179,7 @@ const activeNav = computed(() => activeMenuItem.value.split('/').at(1));
   }
 
   h1 {
-    margin-top: 8px;
+    margin-top: 12px;
     margin-bottom: 20px;
     font-weight: 500;
     font-size: 30px;
@@ -189,7 +190,14 @@ const activeNav = computed(() => activeMenuItem.value.split('/').at(1));
   h2 {
     margin: 48px 0 16px;
     font-size: 24px;
+    font-size: 20px;
     line-height: 32px;
+  }
+
+  h3 {
+    margin: 16px 0;
+    font-size: 18px;
+    line-height: 28px;
   }
 
   p {
@@ -224,6 +232,62 @@ const activeNav = computed(() => activeMenuItem.value.split('/').at(1));
         opacity: 1;
       }
     }
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+
+    td:first-of-type {
+      width: 18%;
+    }
+
+    td:nth-of-type(4) {
+      width: 12%;
+    }
+  }
+
+  th,
+  td {
+    padding: 12px 8px 12px 8px;
+    border: none;
+    text-align: left;
+  }
+
+  th {
+    font-weight: bold;
+    background-color: #fff;
+
+    &:first-of-type {
+      border-radius: 10px 0 0 0;
+    }
+
+    &:last-of-type {
+      border-radius: 0 10px 0 0;
+    }
+  }
+
+  tbody tr:nth-child(even) {
+    background-color: #fff;
+
+    &:first-of-type {
+      border-radius: 0 0 0 10px;
+    }
+
+    &:last-of-type {
+      border-radius: 0 0 10px 0;
+    }
+  }
+
+  table code {
+    padding: 2px 4px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-family: Menlo, Monaco, Consolas, Courier New, monospace;
+    background: rgba(0, 0, 0, 0.06);
   }
 }
 </style>

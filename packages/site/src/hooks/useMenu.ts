@@ -7,6 +7,8 @@ export interface MenuItem {
   title: string;
   // 路径
   path: string;
+  //
+  subtitle?: string;
 }
 
 export interface MenuGroup {
@@ -46,12 +48,12 @@ export function useMenu() {
   });
 
   const dataSource = computed(() => {
-    const group = groupBy(menus.value, (m: any) => m.category);
+    const group = groupBy(menus.value, (m: any) => m.group?.title);
 
     const keys: string[] = Object.keys(group);
 
     const newMenus = keys
-      .map((key) => ({ title: key, order: typeOrder[key]?.order, children: sortBy(group[key], 'title') }))
+      .map((key) => ({ title: key, order: typeOrder[key]?.order, children: sortBy(group[key], 'group.order') }))
       .sort((a, b) => a.order - b.order)
       .map((m) => (m.order === -1 ? m.children : m)) as MenuGroup[];
 

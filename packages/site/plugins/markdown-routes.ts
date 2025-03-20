@@ -2,7 +2,6 @@ import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 import { Plugin } from 'vite';
-import { toString } from 'lodash-es';
 
 // 定义路由配置项的类型
 interface RouteConfig {
@@ -31,7 +30,7 @@ function generateRoutesFromMd(dirPath: string, mdDir: string): RouteConfig[] {
 
     meta = { title: name[0].toLocaleUpperCase() + name.slice(1), ...meta };
 
-    const route = { path: name, component: `() => import('${path.join(mdDir, file, 'index.md')}')`, meta };
+    const route = { path: name, component: `() => import('${path.posix.join('@/', mdDir, file, 'index.md')}')`, meta };
 
     routes.push(route);
   }
@@ -52,7 +51,7 @@ function MarkdownRoutes(mdDir: string): Plugin {
       const routeConfigFile = path.resolve(config.root, 'src/router', 'demo-routes.ts');
 
       // 生成 md-routes.ts 文件内容
-      let routeConfigContent = 'export const mdRoutes = [\n';
+      let routeConfigContent = 'export default [\n';
       routes.forEach((route) => {
         routeConfigContent += `  {\n`;
         routeConfigContent += `    path: '${route.path}',\n`;
