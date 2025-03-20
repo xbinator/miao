@@ -111,6 +111,7 @@ function handleToolAction(action: string) {
 
 .m-bubble__container {
   width: fit-content;
+  max-width: 100%;
 }
 
 .m-bubble__content--collapse {

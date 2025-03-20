@@ -17,6 +17,8 @@
     <MBubbleText :content="md" placement="start" :avatar="{ title: 'Make AI Outstanding' }" is-collapse />
 
     <MBubbleText :content="code" placement="start" is-collapse typing />
+
+    <MBubbleText content="content" />
   </MLayout>
 </template>
 
