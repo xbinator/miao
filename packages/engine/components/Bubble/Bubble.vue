@@ -1,44 +1,45 @@
 <template>
   <div :class="bem([placement])">
-    <Avatar v-if="avatar" v-bind="isObject(avatar) ? avatar : {}" :class="bem('avatar')" />
+    <slot name="avatar">
+      <Avatar v-if="avatar" v-bind="isObject(avatar) ? avatar : {}" :class="bem('avatar')" />
+    </slot>
 
     <div :class="bem('main')">
-      <slot name="header"></slot>
-
       <div v-if="loading && placement === 'start'" :class="bem('container')">
         <Loading type="dot" />
       </div>
 
       <template v-else>
-        <div :class="bem('section')">
-          <template v-if="placement === 'end'">
-            <Loading v-if="loading" type="circle" :class="bem('loading')" />
-          </template>
+        <template v-if="placement === 'end'">
+          <Loading v-if="loading" type="circle" :class="bem('loading')" />
+        </template>
+        <!-- 气泡容器 -->
+        <div :class="bem('container')">
+          <div ref="contentRef" :class="bem('content', { collapse: collapse.value })">
+            <slot></slot>
+          </div>
 
-          <div :class="bem('container')">
-            <div ref="contentRef" :class="bem('content', { collapse: collapse.value })">
-              <slot></slot>
-            </div>
-
-            <div v-if="placement === 'start' && collapse.visible && isCollapse" :class="bem('collapse', { active: collapse.value })">
-              <button :class="bem('collapse-button')" @click="toggleCollapse">
-                <div :class="bem('collapse-text')">
-                  {{ collapse.value ? '展开查看全部' : '收起' }}
-                </div>
-                <Icon type="&#xe69b;" :class="bem('collapse-icon')" :rotate="collapse.value ? 0 : 180" />
-              </button>
-            </div>
+          <div v-if="shouldShowCollapseButton" :class="bem('collapse', { active: collapse.value })">
+            <button :class="bem('collapse-button')" @click="toggleCollapse">
+              <div :class="bem('collapse-text')">
+                {{ collapse.value ? '展开查看全部' : '收起' }}
+              </div>
+              <Icon type="&#xe69b;" :class="bem('collapse-icon')" :rotate="collapse.value ? 0 : 180" />
+            </button>
           </div>
         </div>
-        <!-- 底部工具栏 -->
-        <Toolbar v-if="status === 'complete' && placement === 'start'" :toolbar="toolbar" @action="handleToolAction" />
       </template>
     </div>
+
+    <!-- 底部工具栏 -->
+    <Toolbar v-if="status === 'complete' && placement === 'start'" :toolbar="toolbar" @action="handleToolAction" />
+
+    <slot name="footer"></slot>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { isObject } from 'lodash-es';
 import { Icon } from '../Icon';
 import { createNamespace } from '../utils';
@@ -57,6 +58,8 @@ const [, bem] = createNamespace('bubble');
 const contentRef = ref<HTMLDivElement>();
 
 const { collapse, toggleCollapse } = useCollapse(contentRef, 200, () => ({ status: props.status, isCollapse: props.isCollapse }));
+
+const shouldShowCollapseButton = computed(() => props.placement === 'start' && collapse.visible && props.isCollapse);
 
 function handleToolAction(action: string) {
   emit('tool-action', action);
@@ -100,11 +103,6 @@ function handleToolAction(action: string) {
 }
 
 .m-bubble__main {
-  display: flex;
-  flex-direction: column;
-}
-
-.m-bubble__section {
   display: flex;
   align-items: center;
 }

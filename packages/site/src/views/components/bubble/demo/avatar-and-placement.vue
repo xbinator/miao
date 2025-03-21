@@ -3,6 +3,11 @@
   <Bubble placement="start" :avatar="{ src: image, title: '路飞' }"> 嘿嘿！你是谁啊？要不要一起吃肉？ </Bubble>
   <Bubble placement="end" :avatar="{ src: image, title: '路飞' }"> 喂——！！ </Bubble>
   <Bubble placement="end" :avatar="{ src: image }"> 吃吃吃！你就知道吃！钱才是最重要的好吗？ </Bubble>
+
+  <Bubble placement="end">
+    <template #avatar>路飞</template>
+    海贼王，我当定了！
+  </Bubble>
 </template>
 
 <script setup lang="ts">

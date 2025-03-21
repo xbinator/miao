@@ -8,7 +8,7 @@
 
     <MBubbleText :content="content" placement="start" :toolbar="true" />
 
-    <MBubbleText :content="content" placement="end" />
+    <MBubbleText :content="content" placement="end" avatar />
 
     <MBubbleText :content="content" placement="end" />
 

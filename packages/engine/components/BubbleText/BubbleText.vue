@@ -1,5 +1,9 @@
 <template>
   <Bubble :placement="placement" :avatar="avatar" :loading="loading" :status="streamStatus" :toolbar="toolbar" :is-collapse="isCollapse">
+    <template #avatar>
+      <slot name="avatar"></slot>
+    </template>
+
     <div :class="[name]">
       <!-- 深度思考 -->
       <div v-if="reasonContent" :class="bem('reason-wrapper')">
@@ -36,7 +40,7 @@ const [typedContent, isContentTyping] = useTyping(() => props.typing, _content);
 const [typedReasonContent, isReasonContentTyping] = useTyping(() => props.typing, _reasonContent);
 
 const isTyping = computed(() => isContentTyping.value || isReasonContentTyping.value);
-// 只是简单判断本地是否完成打印，后续还需判断接口是否已经返回全部
+
 const streamStatus = computed(() => (isTyping.value ? 'output' : 'complete'));
 
 const [name, bem] = createNamespace('bubble-text');
