@@ -1,4 +1,4 @@
-name: Deploy miao-site to GitHub Pages
+name: Deploy site
 
 on:
   push:
@@ -9,29 +9,23 @@ permissions:
   contents: write # 允许 GitHub Actions 推送到 gh-pages 分支
 
 jobs:
-  build-and-deploy:
+  deploy-site:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Setup Corepack (Enable pnpm)
-        run: corepack enable
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 18
-          cache: 'pnpm'
+          cache: 'pnpm' # 使用 pnpm 缓存
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: 8
-
-      - name: Verify pnpm Installation
-        run: pnpm --version
+          version: 8 # 确保 pnpm 版本正确
 
       - name: Install Dependencies
         run: pnpm install --no-frozen-lockfile
