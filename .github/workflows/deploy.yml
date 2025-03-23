@@ -1,12 +1,12 @@
-name: Deploy miao - site to GitHub Pages
+name: Deploy miao-site to GitHub Pages
 
 on:
   push:
     branches:
-      - main # 监听 main 分支推送
+      - main
 
 permissions:
-  contents: write # 允许 GitHub Actions 推送到 gh-pages 分支
+  contents: write
 
 jobs:
   build-and-deploy:
@@ -16,14 +16,16 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js and pnpm
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 18
           cache: 'pnpm'
 
-      - name: Install pnpm
-        run: npm install -g pnpm
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
 
       - name: Install Dependencies
         run: pnpm install
