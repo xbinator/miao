@@ -3,6 +3,10 @@ import components from './demo-routes';
 
 const routes: RouteRecordRaw[] = [
   {
+    path: '/',
+    redirect: '/docs/introduce'
+  },
+  {
     path: '/docs',
     component: () => import('@/layout/index.vue'),
     redirect: '/docs/introduce',
