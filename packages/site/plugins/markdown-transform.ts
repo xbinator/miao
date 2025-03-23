@@ -34,7 +34,7 @@ export default function MarkdownTransform(): Plugin {
         return `<Demo source="${encodeURIComponent(md.render(`\`\`\` vue\n${source}\`\`\``))}" title="${title}" ><${_name} /></Demo>`;
       });
 
-      return `${_code}<script setup>${_path}</script>`;
+      return _path ? `${_code}<script setup>${_path}</script>` : _code;
     }
   };
 }
