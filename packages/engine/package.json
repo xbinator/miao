@@ -1,0 +1,28 @@
+{
+  "name": "@miao/engine",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@types/lodash-es": "^4.17.12",
+    "@types/markdown-it": "^14.1.2",
+    "@vitejs/plugin-vue": "^5.2.1",
+    "@vue/tsconfig": "^0.7.0",
+    "less": "^4.2.2",
+    "typescript": "~5.7.2",
+    "vite": "^6.2.0",
+    "vue": "^3.5.13",
+    "vue-tsc": "^2.2.4"
+  },
+  "dependencies": {
+    "@vueuse/core": "^13.0.0",
+    "highlight.js": "^11.11.1",
+    "lodash-es": "^4.17.21",
+    "markdown-it": "^14.1.0",
+    "markdown-it-highlightjs": "^4.2.0"
+  }
+}
