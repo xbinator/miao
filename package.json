@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "pnpm run dev:chat",
     "dev:chat": "pnpm --filter @miao/chat dev",
-    "dev:site": "pnpm --filter @miao/site dev"
+    "dev:site": "pnpm --filter @miao/site dev",
+    "build:site": "pnpm --filter @miao/site build"
   },
   "keywords": [],
   "author": "",
