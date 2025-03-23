@@ -1,34 +1,26 @@
-name: Deploy site
+name: Deploy to Miao Site
 
 on:
   push:
     branches:
-      - main # 监听 main 分支推送
+      - main
 
 permissions:
   contents: write # 允许 GitHub Actions 推送到 gh-pages 分支
 
 jobs:
-  deploy-site:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: 'pnpm' # 使用 pnpm 缓存
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8 # 确保 pnpm 版本正确
-
-      - name: Install pnpm globally
-        run: npm install -g pnpm
+          cache: 'pnpm'
 
       - name: Install Dependencies
         run: pnpm install --no-frozen-lockfile
