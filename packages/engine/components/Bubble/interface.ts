@@ -23,6 +23,8 @@ export interface BubbleProps extends BubbleToolbarProps {
   loading?: boolean;
   // 是否展示
   isCollapse?: boolean;
+  // 样式
+  fit?: 'cover';
   // 流式数据状态
   status?: 'wait' | 'output' | 'complete';
 }

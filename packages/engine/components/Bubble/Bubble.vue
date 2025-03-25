@@ -1,5 +1,5 @@
 <template>
-  <div :class="bem([placement])">
+  <div :class="bem([placement, fit])">
     <div :class="bem('avatar')">
       <slot name="avatar">
         <Avatar v-if="avatar" v-bind="isObject(avatar) ? avatar : {}" />
@@ -21,14 +21,7 @@
             <slot></slot>
           </div>
 
-          <div v-if="shouldShowCollapseButton" :class="bem('collapse', { active: collapse.value })">
-            <button :class="bem('collapse-button')" @click="toggleCollapse">
-              <div :class="bem('collapse-text')">
-                {{ collapse.value ? '展开查看全部' : '收起' }}
-              </div>
-              <Icon type="&#xe69b;" :class="bem('collapse-icon')" :rotate="collapse.value ? 0 : 180" />
-            </button>
-          </div>
+          <ButtonCollapse v-if="shouldShowCollapseButton" v-model:visible="collapse.value" />
         </div>
       </template>
     </div>
@@ -44,14 +37,14 @@
 import type { BubbleProps, BubbleActionOptions } from './interface';
 import { computed, ref } from 'vue';
 import { isObject } from 'lodash-es';
-import { Icon } from '../Icon';
 import { createNamespace } from '../utils';
 import Avatar from './Avatar.vue';
-import Loading from './components/Loading.vue';
 import Toolbar from './Toolbar.vue';
 import useCollapse from './hooks/useCollapse';
+import ButtonCollapse from './components/ButtonCollapse.vue';
+import Loading from './components/Loading.vue';
 
-const props = withDefaults(defineProps<BubbleProps>(), { placement: 'start', avatar: undefined, status: 'complete', isCollapse: false });
+const props = withDefaults(defineProps<BubbleProps>(), { placement: 'start', avatar: undefined, status: 'complete', isCollapse: false, fit: 'cover' });
 
 const emit = defineEmits<{ (e: 'actions', options: BubbleActionOptions): void }>();
 
@@ -59,7 +52,7 @@ const [, bem] = createNamespace('bubble');
 
 const contentRef = ref<HTMLDivElement>();
 
-const { collapse, toggleCollapse } = useCollapse(contentRef, 200, () => ({ status: props.status, isCollapse: props.isCollapse }));
+const { collapse } = useCollapse(contentRef, 200, () => ({ status: props.status, isCollapse: props.isCollapse }));
 
 const shouldShowCollapseButton = computed(() => props.placement === 'start' && collapse.visible && props.isCollapse);
 
@@ -129,19 +122,6 @@ function handleToolAction(options: BubbleActionOptions) {
   justify-content: center;
   align-items: center;
   margin: 14px 0;
-
-  &.m-bubble__collapse--active {
-    &::before {
-      position: absolute;
-      top: -14px;
-      right: 0;
-      left: 0;
-      height: 28px;
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #fff 100%);
-      transform: translateY(-100%);
-      content: '';
-    }
-  }
 }
 
 .m-bubble__collapse-button {
@@ -152,7 +132,7 @@ function handleToolAction(options: BubbleActionOptions) {
 }
 
 .m-bubble__collapse-text {
-  font-weight: 500;
+  font-weight: bold;
   font-size: 12px;
   line-height: 16px;
 }

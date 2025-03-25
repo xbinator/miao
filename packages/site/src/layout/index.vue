@@ -174,14 +174,14 @@ const activeNav = computed(() => activeMenuItem.value.split('/').at(1));
 
   .layout__main__content__title {
     margin-bottom: 16px;
-    font-weight: 500;
+    font-weight: bold;
     font-size: 30px;
   }
 
   h1 {
     margin-top: 12px;
     margin-bottom: 20px;
-    font-weight: 500;
+    font-weight: bold;
     font-size: 30px;
     line-height: 38px;
     color: #333;
@@ -264,7 +264,7 @@ const activeNav = computed(() => activeMenuItem.value.split('/').at(1));
 
   thead {
     th {
-      font-weight: 500;
+      font-weight: bold;
       background-color: #f8f8f8;
     }
   }

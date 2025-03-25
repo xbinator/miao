@@ -37,7 +37,7 @@ import { Icon } from '../Icon';
 import useTyping from './hooks/useTyping';
 import MessageRender from './components/MessageRender.vue';
 
-const props = withDefaults(defineProps<BubbleTextProps>(), { typing: false, content: '', reasonContent: '', isCollapse: undefined });
+const props = withDefaults(defineProps<BubbleTextProps>(), { typing: false, content: '', reasonContent: '', isCollapse: true });
 
 const emit = defineEmits<{ (e: 'actions', options: BubbleTextActionOptions): void }>();
 
@@ -83,7 +83,7 @@ watch(
 .m-bubble-text__reason-title {
   display: flex;
   align-items: center;
-  font-weight: 500;
+  font-weight: bold;
   font-size: 14px;
   line-height: 26px;
   color: #666;
