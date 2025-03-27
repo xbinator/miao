@@ -5,26 +5,22 @@ on:
     branches:
       - main
 
+permissions:
+  contents: write
+
 jobs:
   deploy:
-    runs-on: macos-14
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout 🛎️
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
         with:
-         ref: 'main'
-
-      - name: Install pnpm
-        run: |
-          npm install -g corepack@latest --force
-          corepack enable
-
-      - uses: actions/setup-node@v4
+          version: 8
+      - uses: actions/setup-node@v3
         with:
-          node-version: '22.14.0'
+          node-version: 18
           cache: 'pnpm'
-
 
       - name: Install Dependencies
         run: pnpm install --no-frozen-lockfile
@@ -37,4 +33,3 @@ jobs:
         with:
           branch: gh-pages
           folder: dist/site
-          token: ${{ secrets.MIAO_UI_TOKEN }}
