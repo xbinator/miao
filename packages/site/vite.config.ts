@@ -65,8 +65,6 @@ export default ({ mode }: ConfigEnv): UserConfig => {
 
     build: {
       outDir: '../../dist/site', // 打包构建输出路径，默认 dist ，如果路径存在，构建之前会被删除
-      // 生成静态资源的存放路径
-      assetsDir: 'static',
       // 设置最终构建的浏览器兼容目标
       target: 'es2015',
       // 此选项允许用户为 CSS 的压缩设置一个不同的浏览器 target
