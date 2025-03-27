@@ -1,0 +1,1 @@
+import{o as e,ay as o,aw as n}from"./index-C4aIKiEM.js";const r={class:"markdown-body"},_={},m="",d=e({__name:"getting-started",setup(a,{expose:t}){return t({frontmatter:{},excerpt:void 0}),(s,c)=>(n(),o("div",r))}});export{d as default,m as excerpt,_ as frontmatter};
