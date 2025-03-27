@@ -30,3 +30,4 @@ jobs:
         with:
           branch: gh-pages
           folder: dist/site
+          token: ${{ secrets.MIAO_UI_TOKEN }}
