@@ -1,0 +1,1 @@
+import{o as t,ay as o,aw as n}from"./index-BFbmh8nH.js";const r={class:"markdown-body"},_={},d="",m=t({__name:"independent",setup(a,{expose:e}){return e({frontmatter:{},excerpt:void 0}),(s,c)=>(n(),o("div",r))}});export{m as default,d as excerpt,_ as frontmatter};
