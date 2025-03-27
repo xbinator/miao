@@ -3,7 +3,7 @@ name: Deploy to Miao Site
 on:
   push:
     branches:
-      - main  # 监听 main 分支的 push 事件
+      - main  # 监听 main 分支的推送事件
 
 permissions:
   contents: read
@@ -16,7 +16,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup PNPM
         uses: pnpm/action-setup@v2
@@ -24,7 +24,7 @@ jobs:
           version: 8
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 18
           cache: 'pnpm'
@@ -39,6 +39,3 @@ jobs:
         uses: actions/upload-pages-artifact@v2
         with:
           path: dist/site
-
-      - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v2
