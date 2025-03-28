@@ -9,25 +9,24 @@
     <ToBottomButton :visible="isBackBottom" @click="setScrollBottom" />
 
     <div :class="bem('footer')">
-      <SkillList v-if="items?.length" :items="items" :class="bem('skill-list')" />
+      <slot name="footer">
+        <SkillList v-if="items?.length" :items="items" :class="bem('skill-list')" />
 
-      <slot name="footer-before"></slot>
+        <Sender :placeholder="placeholder" :loading="loading" @send="handleMessageSend" @cancel="handleMessageCancel" />
 
-      <Sender :placeholder="placeholder" :loading="loading" @send="handleMessageSend" @cancel="handleMessageCancel" />
+        <div v-if="useDeepThink || useNetSearch" :class="bem('tools')">
+          <AttachmentTool v-if="useDeepThink" v-model:value="activated" text="深度思考" icon="&#xe641;" :false-value="null" :true-value="'R1'" />
 
-      <slot name="footer-after"></slot>
-
-      <div v-if="useDeepThink || useNetSearch" :class="bem('tools')">
-        <AttachmentTool v-if="useDeepThink" v-model:value="activated" text="深度思考" icon="&#xe641;" :false-value="null" :true-value="'R1'" />
-
-        <AttachmentTool v-if="useNetSearch" v-model:value="activated" text="联网搜索" icon="&#xe634;" :false-value="null" :true-value="'R2'" />
-      </div>
+          <AttachmentTool v-if="useNetSearch" v-model:value="activated" text="联网搜索" icon="&#xe634;" :false-value="null" :true-value="'R2'" />
+        </div>
+      </slot>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import type { LayoutProps } from './interface';
+import type { SenderResult } from '../Sender/interface';
 import { reactive, ref, nextTick } from 'vue';
 import { useEventListener } from '@vueuse/core';
 import { createNamespace } from '../utils';
@@ -40,7 +39,11 @@ import ToBottomButton from './components/ToBottomButton.vue';
 
 const props = withDefaults(defineProps<LayoutProps>(), { useDeepThink: false, useNetSearch: false, loading: false, finished: false });
 
-const emit = defineEmits(['load', 'message-send', 'message-cancel']);
+const emit = defineEmits<{
+  (e: 'load'): void;
+  (e: 'send', result: SenderResult): void;
+  (e: 'cancel'): void;
+}>();
 
 const isRefresh = defineModel<boolean>('isRefresh', { default: false });
 
@@ -76,12 +79,12 @@ function handleLoadData() {
   emit('load');
 }
 
-function handleMessageSend(value: string) {
-  emit('message-send', value);
+function handleMessageSend(result: SenderResult) {
+  emit('send', result);
 }
 
 function handleMessageCancel() {
-  emit('message-cancel');
+  emit('cancel');
 }
 
 function handleEventScroll() {
