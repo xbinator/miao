@@ -22,7 +22,9 @@ export interface MenuGroup {
 
 const typeOrder = {
   组件总览: { order: -1 },
-  通用: { order: 0 }
+  通用: { order: 0 },
+  布局: { order: 1 },
+  表达: { order: 2 }
 };
 
 export function useMenu() {

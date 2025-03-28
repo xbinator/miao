@@ -1,5 +1,5 @@
 <template>
-  <MBubble> hello world </MBubble>
+  <MLayout> hello world </MLayout>
 </template>
 
 <script setup lang="ts"></script>

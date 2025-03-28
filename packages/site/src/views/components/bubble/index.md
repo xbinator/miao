@@ -47,15 +47,16 @@ loading
 
 ### Props
 
-| 参数       | 说明                               | 类型                                                    | 默认值   |
-| ---------- | ---------------------------------- | ------------------------------------------------------- | -------- |
-| toolbar    | 底部工具栏                         | boolean \| ('copy' \| 'reset' \| 'like' \| 'dislike')[] | false    |
-| feedback   | 赞 / 踩的值                        | number                                                  | 无       |
-| placement  | 信息位置                           | 'start' \| 'end'                                        | 'start'  |
-| avatar     | 头像信息                           | BubbleAvatarProps \| boolean \| slot                    | false    |
-| loading    | 加载状态                           | boolean                                                 | false    |
-| isCollapse | 是否展示                           | boolean                                                 | false    |
-| status     | 当前流式数据状态，用于可以折叠判断 | 'wait' \| 'output' \| 'complete'                        | complete |
+| 参数       | 说明                                             | 类型                                                    | 默认值   |
+| ---------- | ------------------------------------------------ | ------------------------------------------------------- | -------- |
+| toolbar    | 底部工具栏配置项，可选择是否显示或自定义展示功能 | boolean \| ('copy' \| 'reset' \| 'like' \| 'dislike')[] | false    |
+| feedback   | 赞 / 踩的值                                      | number                                                  | 无       |
+| placement  | 信息位置                                         | 'start' \| 'end'                                        | 'start'  |
+| avatar     | 头像信息                                         | BubbleAvatarProps \| boolean \| slot                    | false    |
+| loading    | 加载状态                                         | boolean                                                 | false    |
+| isCollapse | 是否展示                                         | boolean                                                 | false    |
+| fit        | 气泡尺寸设定                                     | 'cover'                                                 | false    |
+| status     | 当前流式数据状态，用于可以折叠判断               | 'wait' \| 'output' \| 'complete'                        | complete |
 
 ### BubbleAvatarProps 接口
 
