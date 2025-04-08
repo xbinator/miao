@@ -1,5 +1,5 @@
 <template>
-  <div ref="root" :class="name">
+  <div ref="root">
     <div
       ref="track"
       :class="bem('track')"
@@ -31,7 +31,7 @@ import { PullRefreshProps } from './interface';
 import useTouch from './hooks/useTouch';
 import { useScrollParent, getScrollTop } from './hooks/useScrollParent';
 
-const [name, bem] = createNamespace('pull-refresh');
+const [, bem] = createNamespace('pull-refresh');
 
 type PullRefreshStatus = 'normal' | 'loading' | 'loosing' | 'pulling';
 
@@ -161,10 +161,6 @@ useEventListener(track, 'touchmove', onTouchMove);
 </script>
 
 <style lang="less">
-.m-pull-refresh {
-  overflow: hidden;
-}
-
 .m-pull-refresh__track {
   position: relative;
   display: flex;
