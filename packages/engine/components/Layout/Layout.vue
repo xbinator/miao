@@ -10,9 +10,16 @@
 
     <div :class="bem('footer')">
       <slot name="footer">
-        <SkillList v-if="items?.length" :items="items" :class="bem('skill-list')" />
+        <SkillList v-if="skills?.length" :items="skills" :class="bem('skill-list')" />
 
-        <Sender :placeholder="placeholder" :loading="loading" @send="handleMessageSend" @cancel="handleMessageCancel" />
+        <Sender
+          :allow-speech="allowSpeech"
+          :placeholder="placeholder"
+          :loading="loading"
+          @send="handleMessageSend"
+          @cancel="handleMessageCancel"
+          @actions="handleActions"
+        />
 
         <div v-if="useDeepThink || useNetSearch" :class="bem('tools')">
           <AttachmentTool v-if="useDeepThink" v-model:value="activated" text="深度思考" icon="&#xe641;" :false-value="null" :true-value="'R1'" />
@@ -25,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import type { LayoutProps } from './interface';
+import type { LayoutProps, LayoutActionOptions } from './interface';
 import type { SenderResult } from '../Sender/interface';
 import { reactive, ref, nextTick } from 'vue';
 import { useEventListener } from '@vueuse/core';
@@ -37,12 +44,13 @@ import { PullRefresh } from '../PullRefresh';
 import useDisableOverscroll from './hooks/useDisableOverscroll';
 import ToBottomButton from './components/ToBottomButton.vue';
 
-const props = withDefaults(defineProps<LayoutProps>(), { useDeepThink: false, useNetSearch: false, loading: false, finished: false });
+const props = withDefaults(defineProps<LayoutProps>(), { useDeepThink: false, useNetSearch: false, loading: false, finished: false, allowSpeech: false });
 
 const emit = defineEmits<{
   (e: 'load'): void;
   (e: 'send', result: SenderResult): void;
   (e: 'cancel'): void;
+  (e: 'actions', options: LayoutActionOptions): void;
 }>();
 
 const isRefresh = defineModel<boolean>('isRefresh', { default: false });
@@ -85,6 +93,10 @@ function handleMessageSend(result: SenderResult) {
 
 function handleMessageCancel() {
   emit('cancel');
+}
+
+function handleActions(options: LayoutActionOptions) {
+  emit('actions', options);
 }
 
 function handleEventScroll() {

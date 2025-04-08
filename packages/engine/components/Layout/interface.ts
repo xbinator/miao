@@ -1,4 +1,5 @@
 import type { SkillProps } from '../Skill/interface';
+import type { SenderActionOptions } from '../Sender/interface';
 
 export interface LayoutProps {
   // 占位符
@@ -10,9 +11,13 @@ export interface LayoutProps {
   // 输入内容
   value?: string;
   // 技能
-  items?: SkillProps[];
+  skills?: SkillProps[];
   // 使用深度思考
   useDeepThink?: boolean;
   // 使用联网搜索
   useNetSearch?: boolean;
+  // 使用语音搜索
+  allowSpeech?: boolean;
 }
+
+export type LayoutActionOptions = SenderActionOptions;
