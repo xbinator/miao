@@ -25,11 +25,11 @@ basic
 
 | 参数         | 说明                 | 类型         | 默认值    |
 | ------------ | -------------------- | ------------ | --------- |
-| placeholder  | 输入框占位符文本     | string       | undefined |
+| placeholder  | 输入框占位符文本     | string       | '' |
 | loading      | 发送消息时的加载状态 | boolean      | false     |
 | finished     | 数据加载完成状态     | boolean      | false     |
-| value        | 输入框中的内容       | string       | undefined |
-| items        | 技能列表             | SkillProps[] | []        |
+| value        | 输入框中的内容       | string       | '' |
+| skills        | 技能列表             | SkillProps[] | []        |
 | useDeepThink | 是否使用深度思考功能 | boolean      | false     |
 | useNetSearch | 是否使用联网搜索功能 | boolean      | false     |
 
