@@ -1,5 +1,5 @@
 <template>
-  <div :class="name" @touchstart="onTouchStart" @mousedown="onTouchStart">
+  <div :class="name" @touchstart="onTouchStart">
     <div>按住说话</div>
   </div>
 
@@ -50,15 +50,9 @@ function stopSpeech() {
 }
 
 async function onStart() {
-  const [error] = await asyncTo(start());
+  await asyncTo(start());
 
-  if (error) {
-    emit('actions', { name: 'error', message: error.name });
-    // eslint-disable-next-line no-use-before-define
-    onTouchCleanup();
-  } else {
-    startRecording();
-  }
+  startRecording();
 }
 
 function onEnd() {
@@ -75,7 +69,7 @@ function onCancel() {
   stopSpeech();
 }
 
-const { onTouchStart, cleanup: onTouchCleanup, isCancelled } = useTouch({ onStart, onEnd, onCancel, target: containerRef });
+const { onTouchStart, isCancelled } = useTouch({ onStart, onEnd, onCancel, target: containerRef });
 </script>
 
 <style lang="less">

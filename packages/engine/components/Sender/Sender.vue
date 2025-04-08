@@ -12,7 +12,7 @@
         @keydown="handleTextareaEvent"
       ></textarea>
 
-      <SpeechInput v-else @complete="handleSendAudio" @actions="handleSpeechAction" />
+      <SpeechInput v-else @complete="handleSendAudio" />
 
       <!-- 录音 -->
       <div v-if="isSupported && allowSpeech && !input" :class="bem('speech-button')" @click="toggleSpeechInput">
@@ -31,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import type { SenderProps, SenderActionOptions, SenderSpeechActionOptions, SenderResult } from './interface';
+import type { SenderProps, SenderActionOptions, SenderResult } from './interface';
 import { ref } from 'vue';
 import { useTextareaAutosize } from '@vueuse/core';
 import { createNamespace } from '../utils';
@@ -39,6 +39,7 @@ import { Icon } from '../Icon';
 import LoadingButton from './components/LoadingButton.vue';
 import SpeechInput from './components/SpeechInput.vue';
 import { useRecording } from './hooks/useRecording';
+import { useMicrophone } from './hooks/useMicrophone';
 
 const props = withDefaults(defineProps<SenderProps>(), { loading: false, placeholder: '', allowSpeech: false });
 
@@ -55,6 +56,8 @@ const [name, bem] = createNamespace('sender');
 const { textarea } = useTextareaAutosize({ input });
 
 const { isSupported } = useRecording();
+
+const { microphonePermission } = useMicrophone();
 
 const isTextInput = ref(true);
 
@@ -78,16 +81,20 @@ function handleTextareaEvent(event: KeyboardEvent) {
   }
 }
 
-function toggleSpeechInput() {
-  isTextInput.value = !isTextInput.value;
+async function toggleSpeechInput() {
+  const permission = await microphonePermission();
+
+  if (permission === 'granted') {
+    // 切换输入方式
+    isTextInput.value = !isTextInput.value;
+  } else {
+    // 不允许使用麦克风
+    emit('actions', { name: 'error', message: 'Microphone Permission denied' });
+  }
 }
 
 function handleCancel() {
   emit('cancel');
-}
-
-function handleSpeechAction(options: SenderSpeechActionOptions) {
-  emit('actions', options);
 }
 </script>
 

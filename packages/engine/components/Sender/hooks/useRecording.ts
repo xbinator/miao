@@ -126,9 +126,6 @@ export function useRecording({ column = 4, onFrequencyUpdate }: UseRecordingOpti
     source.connect(analyser.value);
     // 更新频率数据
     updateFrequencyData();
-
-    // eslint-disable-next-line consistent-return
-    return stream.value;
   }
 
   async function start() {
@@ -136,7 +133,7 @@ export function useRecording({ column = 4, onFrequencyUpdate }: UseRecordingOpti
 
     if (stream.value) enabled.value = true;
 
-    return stream.value;
+    return enabled.value;
   }
 
   return { isSupported, enabled, stream, stop, start };
