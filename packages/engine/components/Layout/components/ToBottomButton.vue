@@ -35,23 +35,23 @@ function handleClick() {
   bottom: 20px;
   left: 50%;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   width: 44px;
   height: 44px;
-  border-radius: 50%;
   font-size: 18px;
   color: rgb(var(--miao-primary-color-value));
+  pointer-events: none;
   background: #fff;
-  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.02), 0 6px 10px 0 rgba(47, 53, 64, 0.1);
+  border-radius: 50%;
+  box-shadow: 0 0 4px 0 rgb(0 0 0 / 2%), 0 6px 10px 0 rgb(47 53 64 / 10%);
   opacity: 0;
   transform: translateX(-50%);
   transition: opacity 0.1s ease;
-  pointer-events: none;
 
   &.m-bottom-button--hidden {
-    opacity: 1;
     pointer-events: auto;
+    opacity: 1;
   }
 }
 </style>

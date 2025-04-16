@@ -70,8 +70,8 @@ function handleToolAction(options: BubbleActionOptions) {
 
 .m-bubble--start {
   .m-bubble__container {
-    border-radius: 2px 12px 12px 12px;
     background: #fff;
+    border-radius: 2px 12px 12px;
   }
 }
 
@@ -79,9 +79,9 @@ function handleToolAction(options: BubbleActionOptions) {
   align-items: flex-end;
 
   .m-bubble__container {
-    border-radius: 12px 2px 12px 12px;
     color: #fff;
     background: rgb(var(--miao-primary-color-value));
+    border-radius: 12px 2px 12px 12px;
   }
 
   .m-bubble__avatar {
@@ -119,8 +119,8 @@ function handleToolAction(options: BubbleActionOptions) {
 .m-bubble__collapse {
   position: relative;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   margin: 14px 0;
 }
 
@@ -132,8 +132,8 @@ function handleToolAction(options: BubbleActionOptions) {
 }
 
 .m-bubble__collapse-text {
-  font-weight: bold;
   font-size: 12px;
+  font-weight: bold;
   line-height: 16px;
 }
 

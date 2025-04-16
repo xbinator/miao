@@ -77,14 +77,13 @@ watch(
   margin: 10px 12px;
   font-size: 14px;
   line-height: 26px;
-  word-break: break-word;
 }
 
 .m-bubble-text__reason-title {
   display: flex;
   align-items: center;
-  font-weight: bold;
   font-size: 14px;
+  font-weight: bold;
   line-height: 26px;
   color: #666;
 }
@@ -108,9 +107,9 @@ watch(
     bottom: 0;
     left: 0;
     width: 2px;
-    border-radius: 1px;
-    background: #eee;
     content: '';
+    background: #eee;
+    border-radius: 1px;
   }
 }
 </style>

@@ -174,8 +174,8 @@ useEventListener(track, 'touchmove', onTouchMove);
   height: 50px;
   font-size: 12px;
   line-height: 50px;
-  text-align: center;
   color: #666;
+  text-align: center;
 
   &.m-pull-refresh__head--loading {
     position: absolute;
