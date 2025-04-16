@@ -14,14 +14,27 @@ function useCollapse(el: Ref<HTMLElement | undefined>, maxHeight: number, status
   };
 
   const updateShowCollapse = () => {
-    if (!el.value) return;
+    if (!el.value || _status.value !== 'complete' || !_isCollapse.value) return;
 
     collapse.visible = el.value.scrollHeight > maxHeight;
   };
 
+  const updateElementStyle = () => {
+    if (!el.value) return;
+
+    el.value.style.overflow = collapse.value ? 'hidden' : '';
+    el.value.style.maxHeight = collapse.value ? `${maxHeight}px` : '';
+  };
+
   watch(
     () => _status.value,
-    (value) => value === 'complete' && _isCollapse.value && nextTick(updateShowCollapse),
+    () => nextTick(updateShowCollapse),
+    { immediate: true }
+  );
+
+  watch(
+    () => collapse.value,
+    () => nextTick(updateElementStyle),
     { immediate: true }
   );
 
