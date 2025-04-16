@@ -22,6 +22,12 @@ pnpm-debug.log*
 *.sln
 *.sw?
 
+# Taro
+deploy_versions/
+.temp/
+.rn_temp/
+*/.swc
+*.local
 
 auto-imports.d.ts
 components.d.ts

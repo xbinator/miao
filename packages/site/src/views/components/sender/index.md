@@ -40,7 +40,7 @@ voice
 
 | 事件    | 说明             | 回调参数                                                                              |
 | ------- | ---------------- | ------------------------------------------------------------------------------------- |
-| send    | 发送按钮点击事件 | ({ value: string; mode: 'text' }) => void \| ({ value: Blob; mode: 'audio' }) => void |
+| send    | 发送按钮点击事件 | ({ value: string; mode: 'text' }) => void \| ({ value: Blob; mode: 'voice' }) => void |
 | actions | 操作回调事件     | (options: SenderActionOptions) => void                                                |
 
 ### SenderActionOptions 接口
