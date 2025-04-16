@@ -13,11 +13,13 @@ export interface LayoutProps {
   // 技能
   skills?: SkillProps[];
   // 使用深度思考
-  useDeepThink?: boolean;
+  deepThink?: boolean;
   // 使用联网搜索
-  useNetSearch?: boolean;
+  netSearch?: boolean;
   // 使用语音搜索
   allowSpeech?: boolean;
+  // 使用下拉搜索
+  allowRefresh?: boolean;
 }
 
 export type LayoutActionOptions = SenderActionOptions;

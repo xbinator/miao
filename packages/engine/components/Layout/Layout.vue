@@ -1,6 +1,6 @@
 <template>
   <div :class="name">
-    <PullRefresh ref="PullRefreshRef" v-model:value="isRefresh" :disabled="disabled.refresh" :class="bem('main')" @refresh="handleLoadData">
+    <PullRefresh ref="PullRefreshRef" v-model:value="isRefresh" :disabled="!allowRefresh" :class="bem('main')" @refresh="handleLoadData">
       <div ref="containerRef" :class="bem('container')">
         <slot></slot>
       </div>
@@ -13,18 +13,19 @@
         <SkillList v-if="skills?.length" :items="skills" :class="bem('skill-list')" />
 
         <Sender
-          :allow-speech="allowSpeech"
+          v-model:value="text"
           :placeholder="placeholder"
           :loading="loading"
+          :allow-speech="allowSpeech"
           @send="handleMessageSend"
           @cancel="handleMessageCancel"
           @actions="handleActions"
         />
 
-        <div v-if="useDeepThink || useNetSearch" :class="bem('tools')">
-          <AttachmentTool v-if="useDeepThink" v-model:value="activated" text="深度思考" icon="&#xe641;" :false-value="null" :true-value="'R1'" />
+        <div v-if="deepThink || netSearch" :class="bem('tools')">
+          <AttachmentTool v-if="deepThink" v-model:value="activated" text="深度思考" icon="&#xe641;" :false-value="null" :true-value="'R1'" />
 
-          <AttachmentTool v-if="useNetSearch" v-model:value="activated" text="联网搜索" icon="&#xe634;" :false-value="null" :true-value="'R2'" />
+          <AttachmentTool v-if="netSearch" v-model:value="activated" text="联网搜索" icon="&#xe634;" :false-value="null" :true-value="'R2'" />
         </div>
       </slot>
     </div>
@@ -34,7 +35,7 @@
 <script setup lang="ts">
 import type { LayoutProps, LayoutActionOptions } from './interface';
 import type { SenderResult } from '../Sender/interface';
-import { reactive, ref, nextTick } from 'vue';
+import { ref, nextTick } from 'vue';
 import { useEventListener } from '@vueuse/core';
 import { createNamespace } from '../utils';
 import { Sender } from '../Sender';
@@ -44,7 +45,14 @@ import { PullRefresh } from '../PullRefresh';
 import useDisableOverscroll from './hooks/useDisableOverscroll';
 import ToBottomButton from './components/ToBottomButton.vue';
 
-const props = withDefaults(defineProps<LayoutProps>(), { useDeepThink: false, useNetSearch: false, loading: false, finished: false, allowSpeech: false });
+const props = withDefaults(defineProps<LayoutProps>(), {
+  loading: false,
+  finished: false,
+  deepThink: false,
+  netSearch: false,
+  allowRefresh: false,
+  allowSpeech: false
+});
 
 const emit = defineEmits<{
   (e: 'load'): void;
@@ -53,6 +61,8 @@ const emit = defineEmits<{
   (e: 'actions', options: LayoutActionOptions): void;
 }>();
 
+const text = defineModel<string>('value', { default: '' });
+
 const isRefresh = defineModel<boolean>('isRefresh', { default: false });
 
 const PullRefreshRef = ref<InstanceType<typeof PullRefresh>>();
@@ -60,8 +70,6 @@ const PullRefreshRef = ref<InstanceType<typeof PullRefresh>>();
 const containerRef = ref<HTMLElement>();
 
 const [name, bem] = createNamespace('layout');
-
-const disabled = reactive({ refresh: false });
 
 useDisableOverscroll();
 
@@ -107,7 +115,7 @@ function handleEventScroll() {
   // 回到底部
   isBackBottom.value = Math.abs(el.scrollTop) > BACK_BOTTOM_HEIGHT;
   // 加载数据
-  if (el.scrollTop < SCROLL_TOP_HEIGHT && !disabled.refresh) {
+  if (el.scrollTop < SCROLL_TOP_HEIGHT && props.allowRefresh) {
     handleLoadData();
   }
 }
@@ -121,7 +129,7 @@ defineExpose({ setScrollBottom });
 .m-layout {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100dvh;
   overflow: hidden;
 }
 
@@ -139,8 +147,8 @@ defineExpose({ setScrollBottom });
 
   &::-webkit-scrollbar-thumb {
     display: block;
+    background: rgb(63 63 63 / 20%);
     border-radius: 2px;
-    background: rgba(63, 63, 63, 0.2);
   }
 }
 
@@ -150,10 +158,10 @@ defineExpose({ setScrollBottom });
 }
 
 .m-layout__footer {
-  gap: 10px;
   display: flex;
   flex-direction: column;
-  padding: 10px 9px 20px;
+  gap: 10px;
+  padding: 10px 9px;
 }
 
 .m-layout__skill-list {
@@ -175,7 +183,7 @@ defineExpose({ setScrollBottom });
 }
 
 .m-layout-overscroll-none {
-  overscroll-behavior: none;
   overflow: hidden;
+  overscroll-behavior: none;
 }
 </style>

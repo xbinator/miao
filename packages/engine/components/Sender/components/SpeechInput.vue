@@ -8,7 +8,7 @@
       {{ isCancelled ? '松手取消' : '松手发送，上移取消' }}
     </div>
 
-    <div v-for="(height, index) in audioHeights" :key="index" :style="{ height }" :class="bem('bar')"></div>
+    <div v-for="(height, index) in voiceHeights" :key="index" :style="{ height }" :class="bem('bar')"></div>
   </div>
 </template>
 
@@ -22,9 +22,9 @@ import { useTouch } from '../hooks/useTocuch';
 
 const [name, bem] = createNamespace('speech-input');
 
-const emit = defineEmits<{ (e: 'actions', options: SenderSpeechActionOptions): void; (e: 'complete', audio: Blob): void }>();
+const emit = defineEmits<{ (e: 'actions', options: SenderSpeechActionOptions): void; (e: 'complete', voice: Blob): void }>();
 
-const audioHeights = ref<string[]>([]);
+const voiceHeights = ref<string[]>([]);
 const containerRef = ref<HTMLElement>();
 
 function onFrequencyUpdate(v: number[]) {
@@ -36,12 +36,12 @@ function onFrequencyUpdate(v: number[]) {
     i !== 0 && (heights[v.length + i - 1] = `${v[i]}px`);
   }
 
-  audioHeights.value = heights;
+  voiceHeights.value = heights;
 }
 
 const { enabled, stop, start, stream } = useRecording({ onFrequencyUpdate, column: 10 });
 
-const { startRecording, stopRecording, getAudioBlob } = useMediaRecorder(stream);
+const { startRecording, stopRecording, getVoiceBlob } = useMediaRecorder(stream);
 
 function stopSpeech() {
   stop();
@@ -58,11 +58,11 @@ async function onStart() {
 function onEnd() {
   stopSpeech();
 
-  const audioBlob = getAudioBlob();
+  const voiceBlob = getVoiceBlob();
 
-  if (!audioBlob?.size) return;
+  if (!voiceBlob?.size) return;
 
-  emit('complete', audioBlob);
+  emit('complete', voiceBlob);
 }
 
 function onCancel() {
@@ -83,21 +83,21 @@ const { onTouchStart, isCancelled } = useTouch({ onStart, onEnd, onCancel, targe
 
 .m-speech-input__container {
   position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 25px;
-  color: #fff;
-  background-color: rgb(var(--miao-primary-color-value));
   inset: 0;
+  display: flex;
   gap: 2px;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
   user-select: none;
+  background-color: rgb(var(--miao-primary-color-value));
+  border-radius: 25px;
 
   .m-speech-input__bar {
     flex-shrink: 0;
     width: 2px;
-    border-radius: 1px;
     background-color: #fff;
+    border-radius: 1px;
   }
 
   &.m-speech-input__container--cancel {

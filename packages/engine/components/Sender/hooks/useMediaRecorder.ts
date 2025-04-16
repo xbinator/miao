@@ -3,19 +3,19 @@ import { ref, Ref, shallowRef } from 'vue';
 export function useMediaRecorder(stream: Ref<MediaStream | undefined>) {
   const mediaRecorder: Ref<MediaRecorder | undefined> = shallowRef();
 
-  const audioChunks: Ref<BlobPart[]> = ref([]);
+  const voiceChunks: Ref<BlobPart[]> = ref([]);
 
-  const audioBlob: Ref<Blob | null> = ref(null);
+  const voiceBlob: Ref<Blob | null> = ref(null);
 
   function startRecording() {
     if (!stream.value) return;
 
-    audioChunks.value = [];
+    voiceChunks.value = [];
 
     mediaRecorder.value = new MediaRecorder(stream.value);
 
     mediaRecorder.value.ondataavailable = (event) => {
-      if (event.data.size > 0) audioChunks.value.push(event.data);
+      if (event.data.size > 0) voiceChunks.value.push(event.data);
     };
 
     mediaRecorder.value.start(500);
@@ -26,12 +26,12 @@ export function useMediaRecorder(stream: Ref<MediaStream | undefined>) {
 
     mediaRecorder.value.stop();
 
-    audioBlob.value = new Blob(audioChunks.value, { type: 'audio/webm' });
+    voiceBlob.value = new Blob(voiceChunks.value, { type: 'voice/webm' });
   }
 
   return {
     startRecording,
     stopRecording,
-    getAudioBlob: () => audioBlob.value
+    getVoiceBlob: () => voiceBlob.value
   };
 }
