@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "dev:h5": "pnpm --filter @miao/taro dev:h5",
-    "dev:chat": "pnpm --filter @miao/chat dev",
+    "dev:wap": "pnpm --filter @miao/wap dev",
     "dev:site": "pnpm --filter @miao/site dev",
     "build:site": "pnpm --filter @miao/site build"
   },

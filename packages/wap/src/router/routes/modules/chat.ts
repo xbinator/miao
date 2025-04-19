@@ -2,9 +2,9 @@ import type { AppRouteRecordRaw } from '@/router/type';
 
 const routes: AppRouteRecordRaw[] = [
   {
-    path: '/overview',
-    name: 'overview-page',
-    component: () => import('@/views/overview/index.vue'),
+    path: '/chat',
+    name: 'chat-page',
+    component: () => import('@/views/chat/index.vue'),
     meta: {}
   }
 ];
