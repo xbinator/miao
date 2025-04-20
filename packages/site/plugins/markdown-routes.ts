@@ -11,8 +11,9 @@ interface RouteConfig {
 }
 
 // 生成路由配置函数
-function generateRoutesFromMd(dirPath: string, mdDir: string): RouteConfig[] {
-  const routes: RouteConfig[] = [];
+function generateRoutesFromMd(dirPath: string, mdDir: string) {
+  const defaults: RouteConfig[] = [];
+  const demos: RouteConfig[] = [];
   const files = fs.readdirSync(dirPath);
 
   for (let i = 0; i < files.length; i += 1) {
@@ -28,14 +29,20 @@ function generateRoutesFromMd(dirPath: string, mdDir: string): RouteConfig[] {
 
     const name = path.basename(file, '.md');
 
-    meta = { title: name[0].toLocaleUpperCase() + name.slice(1), ...meta };
+    const title = name[0].toLocaleUpperCase() + name.slice(1);
+
+    meta = { title, ...meta, name };
 
     const route = { path: name, component: `() => import('${path.posix.join('@/', mdDir, file, 'index.md')}')`, meta };
 
-    routes.push(route);
+    const demo = { path: name, component: `() => import('${path.posix.join('@/', mdDir, file, 'demo/index.vue')}')`, meta: { title } };
+
+    defaults.push(route);
+
+    fs.existsSync(path.join(dirPath, file, 'demo/index.vue')) && demos.push(demo);
   }
 
-  return routes;
+  return { defaults, demos };
 }
 
 //
@@ -45,18 +52,28 @@ function MarkdownRoutes(mdDir: string): Plugin {
     configResolved(config) {
       const resolvedMdDir = path.resolve(config.root, 'src', mdDir);
 
-      const routes = generateRoutesFromMd(resolvedMdDir, mdDir);
+      const { defaults, demos } = generateRoutesFromMd(resolvedMdDir, mdDir);
 
       // 将生成的路由配置注入到 Vite 配置中
       const routeConfigFile = path.resolve(config.root, 'src/router', 'demo-routes.ts');
 
       // 生成 md-routes.ts 文件内容
       let routeConfigContent = 'export default [\n';
-      routes.forEach((route) => {
+      defaults.forEach((route) => {
         routeConfigContent += `  {\n`;
         routeConfigContent += `    path: '${route.path}',\n`;
         routeConfigContent += `    component: ${route.component.toString()},\n`;
         routeConfigContent += `    meta: ${JSON.stringify(route.meta)}\n`;
+        routeConfigContent += `  },\n`;
+      });
+      routeConfigContent += '];\n\n';
+
+      routeConfigContent += 'export const demos = [\n';
+      demos.forEach((demo) => {
+        routeConfigContent += `  {\n`;
+        routeConfigContent += `    path: '${demo.path}',\n`;
+        routeConfigContent += `    component: ${demo.component.toString()},\n`;
+        routeConfigContent += `    meta: ${JSON.stringify(demo.meta)}\n`;
         routeConfigContent += `  },\n`;
       });
       routeConfigContent += '];\n';
