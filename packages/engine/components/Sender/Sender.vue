@@ -43,7 +43,7 @@ import { useMicrophone } from './hooks/useMicrophone';
 
 type InputType = 'text' | 'voice';
 
-const props = withDefaults(defineProps<SenderProps>(), { loading: false, placeholder: '', allowSpeech: false });
+const props = withDefaults(defineProps<SenderProps>(), { loading: false, placeholder: '请输入', allowSpeech: false });
 
 const input = defineModel<string>('value', { default: '' });
 
