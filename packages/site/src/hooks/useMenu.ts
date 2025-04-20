@@ -9,6 +9,10 @@ export interface MenuItem {
   path: string;
   //
   subtitle?: string;
+  //
+  name: string;
+  //
+  simulator?: boolean;
 }
 
 export interface MenuGroup {

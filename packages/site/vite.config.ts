@@ -5,8 +5,9 @@ import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 import Components from 'unplugin-vue-components/vite';
 import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
-import Markdown from 'vite-plugin-md';
+import Markdown from 'unplugin-vue-markdown/vite';
 import markdownItAnchor from 'markdown-it-anchor';
+import MarkdownItPrism from 'markdown-it-prism';
 import MarkdownTransform from './plugins/markdown-transform';
 import MarkdownRoutes from './plugins/markdown-routes';
 
@@ -53,6 +54,8 @@ export default ({ mode }: ConfigEnv): UserConfig => {
             }),
             slugify: (s) => s.trim().toLowerCase() // 处理中文标题的 URL
           });
+
+          md.use(MarkdownItPrism);
         }
       }),
       // @ts-ignore

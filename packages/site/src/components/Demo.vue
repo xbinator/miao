@@ -56,19 +56,17 @@ function toggleVisible() {
 
 .example-button-wrapper {
   display: flex;
-  justify-content: center;
-  align-content: center;
+  place-content: center center;
   padding: 10px;
 }
 
 .example-button {
   display: flex;
-  justify-content: center;
-  align-content: center;
+  place-content: center center;
   width: 32px;
   height: 32px;
-  border-radius: 6px;
   cursor: pointer;
+  border-radius: 6px;
 
   &:hover,
   &.action {
@@ -82,8 +80,8 @@ function toggleVisible() {
   flex-direction: column;
   gap: 20px;
   padding: 20px;
-  border-radius: 12px 12px 0 0;
   background-color: #f8f8f8;
+  border-radius: 12px 12px 0 0;
 
   p {
     margin: 0 !important;
@@ -94,9 +92,9 @@ function toggleVisible() {
   .shiki {
     padding: 20px;
     margin: 0;
-    border-radius: 0 0 12px 12px;
     overflow: auto;
     background-color: #f9f9f9 !important;
+    border-radius: 0 0 12px 12px;
 
     &::-webkit-scrollbar {
       display: block;
@@ -106,8 +104,8 @@ function toggleVisible() {
 
     &::-webkit-scrollbar-thumb {
       display: block;
+      background: rgb(63 63 63 / 20%);
       border-radius: 2px;
-      background: rgba(63, 63, 63, 0.2);
     }
   }
 }

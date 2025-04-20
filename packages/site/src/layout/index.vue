@@ -29,9 +29,10 @@
       <div :class="$style.layout__main__container">
         <div :class="$style.layout__main__content">
           <div :class="$style.layout__main__content__title">{{ currentMenuItem?.title }}</div>
-
           <RouterView />
         </div>
+
+        <Simulator v-if="currentMenuItem?.simulator" />
       </div>
     </div>
   </div>
@@ -42,6 +43,7 @@ import { computed } from 'vue';
 import { RouterLink } from 'vue-router';
 import Menu from './Menu.vue';
 import { useMenu } from '@/hooks/useMenu';
+import Simulator from '@/components/Simulator.vue';
 
 const nav = [
   { label: '文档', value: 'docs' },
@@ -65,10 +67,11 @@ const activeNav = computed(() => activeMenuItem.value.split('/').at(1));
 .layout__header {
   position: relative;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   height: 80px;
   padding: 0 20px;
+  border-bottom: 1px solid rgb(5 5 5 / 6%);
 }
 
 .layout__header__left {
@@ -78,23 +81,23 @@ const activeNav = computed(() => activeMenuItem.value.split('/').at(1));
 
 .layout__header__logo {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   width: 40px;
   height: 40px;
   margin-right: 16px;
-  border-radius: 12px;
-  font-size: 30px;
   font-family: layout-title;
+  font-size: 30px;
   line-height: 1;
   color: #fff;
-  background-color: #0cbf64;
   user-select: none;
+  background-color: #0cbf64;
+  border-radius: 12px;
 }
 
 .layout__header__title {
-  font-size: 28px;
   font-family: layout-title;
+  font-size: 28px;
   line-height: 1;
 }
 
@@ -104,33 +107,25 @@ const activeNav = computed(() => activeMenuItem.value.split('/').at(1));
 }
 
 .layout__header__nav {
-  position: absolute;
-  top: 50%;
-  left: 50%;
   display: flex;
+  gap: 24px;
   align-items: center;
   height: 48px;
   padding: 0 24px;
-  border-radius: 24px;
   font-size: 16px;
-  white-space: nowrap;
-  background-color: linear-gradient(117deg, #ffffff1a 17%, #ffffff0d 51%);
-  box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
-  transform: translate(-50%, -50%);
-  backdrop-filter: blur(40px);
-  gap: 24px;
+  border-radius: 24px;
 }
 
 .layout__nav__item {
-  color: rgba(0, 0, 0, 0.55);
+  color: rgb(0 0 0 / 55%);
   cursor: pointer;
 
   &:hover {
-    color: rgba(0, 0, 0, 0.88);
+    color: rgb(0 0 0 / 88%);
   }
 
   &.active {
-    color: rgba(0, 0, 0, 0.88);
+    color: rgb(0 0 0 / 88%);
   }
 }
 
@@ -149,47 +144,49 @@ const activeNav = computed(() => activeMenuItem.value.split('/').at(1));
 }
 
 .layout__main__container {
+  display: flex;
   flex: 1;
+  justify-content: center;
   width: 0;
+  padding: 30px 48px 40px;
   overflow: auto;
 
   &::-webkit-scrollbar {
     display: block;
-    width: 10px;
-    height: 12px;
+    width: 6px;
+    height: 6px;
   }
 
   &::-webkit-scrollbar-thumb {
     display: block;
+    background: rgb(63 63 63 / 20%);
     border-radius: 4px;
-    background: rgba(63, 63, 63, 0.2);
   }
 }
 
 .layout__main__content {
-  width: 100%;
-  max-width: 1200px;
-  padding: 30px 164px 40px 48px;
-  margin: 0 auto;
+  flex: 1;
+  width: 0;
+  height: fit-content;
+  margin-right: 60px;
 
   .layout__main__content__title {
     margin-bottom: 16px;
-    font-weight: bold;
     font-size: 30px;
+    font-weight: bold;
   }
 
   h1 {
     margin-top: 12px;
     margin-bottom: 20px;
-    font-weight: bold;
     font-size: 30px;
+    font-weight: bold;
     line-height: 38px;
     color: #333;
   }
 
   h2 {
     margin: 48px 0 16px;
-    font-size: 24px;
     font-size: 20px;
     line-height: 32px;
   }
@@ -235,10 +232,10 @@ const activeNav = computed(() => activeMenuItem.value.split('/').at(1));
   }
 
   table {
-    border-collapse: collapse;
     width: 100%;
-    border: 1px solid #eaeaea;
     font-size: 13px;
+    border-collapse: collapse;
+    border: 1px solid #eaeaea;
 
     td:first-of-type {
       width: 18%;
@@ -252,9 +249,9 @@ const activeNav = computed(() => activeMenuItem.value.split('/').at(1));
 
   th,
   td {
-    padding: 12px 8px 12px 8px;
-    border-bottom: 1px solid #eaeaea;
+    padding: 12px 8px;
     text-align: left;
+    border-bottom: 1px solid #eaeaea;
   }
 
   th {
@@ -284,43 +281,65 @@ const activeNav = computed(() => activeMenuItem.value.split('/').at(1));
       }
 
       &:last-of-type {
-        border-radius: 0 0 10px 0;
+        border-radius: 0 0 10px;
       }
     }
   }
 
   table code {
     padding: 2px 4px;
-    border-radius: 4px;
+    font-family: Menlo, Monaco, Consolas, 'Courier New', monospace;
     font-size: 12px;
-    font-family: Menlo, Monaco, Consolas, Courier New, monospace;
-    background: rgba(0, 0, 0, 0.06);
+    background: rgb(0 0 0 / 6%);
+    border-radius: 4px;
   }
 
   code {
     padding: 2px 5px;
     border-radius: 3px;
-    background: #eee;
   }
 
   pre code {
-    padding: auto;
-    border-radius: 0;
-    background: transparent;
+    padding: 0;
+  }
+
+  pre[class*='language-'] {
+    padding: 16px 20px;
+    margin: 20px 0;
+    background: #f7f8fa;
+    border-radius: 20px;
+
+    &::-webkit-scrollbar {
+      display: block;
+      height: 6px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      display: block;
+      background: rgb(63 63 63 / 20%);
+      border-radius: 4px;
+    }
   }
 
   blockquote {
     padding: 3px 10px;
     margin: 20px 0;
-    border-left: 4px solid #ccc;
     font-style: italic;
     color: #555;
     background: #f9f9f9;
+    border-left: 4px solid #ccc;
 
     p {
       margin: 6px 0;
       line-height: 20px;
     }
+  }
+}
+
+@media (width >= 2080px) {
+  .layout__main__content {
+    flex: 0 1 auto;
+    width: 1200px;
   }
 }
 </style>

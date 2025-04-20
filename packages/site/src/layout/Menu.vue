@@ -36,8 +36,8 @@ withDefaults(defineProps<Props>(), { menus: () => [], activeMenuItem: '' });
     > .ant-menu-item,
     .ant-menu-item a {
       overflow: hidden;
-      font-size: 14px;
       text-overflow: ellipsis;
+      font-size: 14px;
     }
 
     > .ant-menu-item-group > .ant-menu-item-group-title {
@@ -51,8 +51,8 @@ withDefaults(defineProps<Props>(), { menus: () => [], activeMenuItem: '' });
         display: block;
         width: calc(100% - 20px);
         height: 1px;
-        background: rgba(5, 5, 5, 0.06);
         content: '';
+        background: rgb(5 5 5 / 6%);
       }
     }
 

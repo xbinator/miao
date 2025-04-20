@@ -1,5 +1,5 @@
-import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
-import components from './demo-routes';
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
+import components, { demos } from './demo-routes';
 
 const routes: RouteRecordRaw[] = [
   {
@@ -30,6 +30,10 @@ const routes: RouteRecordRaw[] = [
     children: components
   },
   {
+    path: '/demo',
+    children: demos
+  },
+  {
     path: '/playground',
     component: () => import('@/layout/index.vue'),
     redirect: '/playground/independent',
@@ -44,6 +48,6 @@ const routes: RouteRecordRaw[] = [
 ];
 
 export default createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes
 });
