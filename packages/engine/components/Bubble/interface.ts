@@ -9,7 +9,6 @@ export type BubbleToolbar = 'copy' | 'reset' | 'like' | 'dislike';
 export interface BubbleToolbarProps {
   // 启用工具
   toolbar?: boolean | BubbleToolbar[];
-
   // 赞 / 踩
   feedback?: number;
 }
@@ -21,10 +20,10 @@ export interface BubbleProps extends BubbleToolbarProps {
   avatar?: BubbleAvatarProps | boolean;
   // 加载状态
   loading?: boolean;
-  // 是否展示
-  isCollapse?: boolean;
-  // 样式
-  fit?: 'cover';
+  // 展示收起按钮
+  collapse?: boolean;
+  // 尺寸
+  size?: 'auto' | 'fill';
   // 流式数据状态
   status?: 'wait' | 'output' | 'complete';
 }

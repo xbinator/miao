@@ -1,8 +1,8 @@
 <template>
-  <div :class="bem([placement, fit])">
-    <div :class="bem('avatar')">
+  <div :class="bem([placement, { [size]: size !== 'auto' }])">
+    <div v-if="avatar" :class="bem('avatar')">
       <slot name="avatar">
-        <Avatar v-if="avatar" v-bind="isObject(avatar) ? avatar : {}" />
+        <Avatar v-bind="isObject(avatar) ? avatar : {}" />
       </slot>
     </div>
 
@@ -44,7 +44,7 @@ import useCollapse from './hooks/useCollapse';
 import ButtonCollapse from './components/ButtonCollapse.vue';
 import Loading from './components/Loading.vue';
 
-const props = withDefaults(defineProps<BubbleProps>(), { placement: 'start', avatar: undefined, status: 'complete', isCollapse: false, fit: 'cover' });
+const props = withDefaults(defineProps<BubbleProps>(), { placement: 'start', avatar: undefined, status: 'complete', collapse: false, size: 'auto' });
 
 const emit = defineEmits<{ (e: 'actions', options: BubbleActionOptions): void }>();
 
@@ -52,9 +52,9 @@ const [, bem] = createNamespace('bubble');
 
 const contentRef = ref<HTMLDivElement>();
 
-const { collapse } = useCollapse(contentRef, 200, () => ({ status: props.status, isCollapse: props.isCollapse }));
+const { collapse } = useCollapse(contentRef, 200, () => ({ status: props.status, collapse: props.collapse }));
 
-const shouldShowCollapseButton = computed(() => props.placement === 'start' && collapse.visible && props.isCollapse);
+const shouldShowCollapseButton = computed(() => props.placement === 'start' && collapse.visible && props.collapse);
 
 function handleToolAction(options: BubbleActionOptions) {
   emit('actions', options);
@@ -65,7 +65,12 @@ function handleToolAction(options: BubbleActionOptions) {
 .m-bubble {
   display: flex;
   flex-direction: column;
-  margin: 0 12px 6px;
+  margin: 20px 12px 0;
+
+  &.m-bubble--start + .m-bubble--start,
+  &.m-bubble--end + .m-bubble--end {
+    margin-top: 6px;
+  }
 }
 
 .m-bubble--start {
@@ -84,7 +89,7 @@ function handleToolAction(options: BubbleActionOptions) {
     border-radius: 12px 2px 12px 12px;
   }
 
-  .m-bubble__avatar {
+  .m-bubble-avatar {
     flex-direction: row-reverse;
   }
 
@@ -94,6 +99,12 @@ function handleToolAction(options: BubbleActionOptions) {
 
   .m-bubble__loading {
     margin-right: 10px;
+  }
+}
+
+.m-bubble--fill {
+  .m-bubble__container {
+    width: 100%;
   }
 }
 

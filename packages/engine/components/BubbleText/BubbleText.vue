@@ -5,7 +5,7 @@
     :loading="loading"
     :status="streamStatus"
     :toolbar="toolbar"
-    :is-collapse="isCollapse"
+    :collapse="collapse"
     @actions="handleBubbleAction"
   >
     <template #avatar>
@@ -37,7 +37,7 @@ import { Icon } from '../Icon';
 import useTyping from './hooks/useTyping';
 import MessageRender from './components/MessageRender.vue';
 
-const props = withDefaults(defineProps<BubbleTextProps>(), { typing: false, content: '', reasonContent: '', isCollapse: true });
+const props = withDefaults(defineProps<BubbleTextProps>(), { typing: false, content: '', reasonContent: '', collapse: true });
 
 const emit = defineEmits<{ (e: 'actions', options: BubbleTextActionOptions): void }>();
 
