@@ -1,0 +1,1 @@
+import{ay as e,aw as o}from"./index-BatdhGZe.js";const a={class:"markdown-body"},m={__name:"getting-started",setup(r,{expose:t}){return t({frontmatter:{}}),(n,c)=>(o(),e("div",a))}};export{m as default};
