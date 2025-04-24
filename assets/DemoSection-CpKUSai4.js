@@ -1,1 +1,0 @@
-import{aG as s,ay as o,aw as n,aK as t,aE as c}from"./index-BatdhGZe.js";const a="_demoSection_w1wxe_1",_={demoSection:a},l={};function r(e,i){return n(),o("div",{class:c(e.$style.demoSection)},[t(e.$slots,"default")],2)}const d={$style:_},u=s(l,[["render",r],["__cssModules",d]]);export{u as _};
