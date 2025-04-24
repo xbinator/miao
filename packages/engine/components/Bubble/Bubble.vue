@@ -44,7 +44,7 @@ import useCollapse from './hooks/useCollapse';
 import ButtonCollapse from './components/ButtonCollapse.vue';
 import Loading from './components/Loading.vue';
 
-const props = withDefaults(defineProps<BubbleProps>(), { placement: 'start', avatar: undefined, status: 'complete', collapse: false, size: 'auto' });
+const props = withDefaults(defineProps<BubbleProps>(), { placement: 'start', avatar: undefined, status: 'complete', collapse: undefined, size: 'auto' });
 
 const emit = defineEmits<{ (e: 'actions', options: BubbleActionOptions): void }>();
 
@@ -52,9 +52,9 @@ const [, bem] = createNamespace('bubble');
 
 const contentRef = ref<HTMLDivElement>();
 
-const { collapse } = useCollapse(contentRef, 200, () => ({ status: props.status, collapse: props.collapse }));
+const { collapse } = useCollapse(contentRef, () => props, props.collapseOptions);
 
-const shouldShowCollapseButton = computed(() => props.placement === 'start' && collapse.visible && props.collapse);
+const shouldShowCollapseButton = computed(() => props.placement === 'start' && collapse.visible && props.isCollapse);
 
 function handleToolAction(options: BubbleActionOptions) {
   emit('actions', options);

@@ -94,7 +94,7 @@ app.use(Bubble);
 通过设置 collapse 属性，可以展开与收起气泡
 
 ```html
-<MBubble :collapse="true">
+<MBubble :is-collapse="true">
   先帝创业未半而中道崩殂，今天下三分，益州疲弊，此诚危急存亡之秋也。然侍卫之臣不懈于内，忠志之士忘身于外者，盖追先帝之殊遇，欲报之于陛下也。诚宜开张圣听，以光先帝遗德，恢弘志士之气，不宜妄自菲薄，引喻失义，以塞忠谏之路也。
   宫中府中，俱为一体，陟罚臧否，不宜异同。若有作奸犯科及为忠善者，宜付有司论其刑赏，以昭陛下平明之理，不宜偏私，使内外异法也。
   侍中、侍郎郭攸之、费祎、董允等，此皆良实，志虑忠纯，是以先帝简拔以遗陛下。愚以为宫中之事，事无大小，悉以咨之，然后施行，必能裨补阙漏，有所广益。
@@ -111,16 +111,17 @@ app.use(Bubble);
 
 ### Props
 
-| 参数      | 说明                                             | 类型                                                    | 默认值   |
-| --------- | ------------------------------------------------ | ------------------------------------------------------- | -------- |
-| toolbar   | 底部工具栏配置项，可选择是否显示或自定义展示功能 | boolean \| ('copy' \| 'reset' \| 'like' \| 'dislike')[] | false    |
-| feedback  | 赞 / 踩的值                                      | number                                                  | 无       |
-| placement | 信息位置                                         | 'start' \| 'end'                                        | 'start'  |
-| avatar    | 头像信息                                         | BubbleAvatarProps \| boolean \| slot                    | false    |
-| loading   | 加载状态                                         | boolean                                                 | false    |
-| collapse  | 展示收起按钮                                     | boolean                                                 | false    |
-| size      | 气泡尺寸设定                                     | 'auto' \| 'fill'                                        | 'auto'   |
-| status    | 当前流式数据状态，用于可以折叠判断               | 'wait' \| 'output' \| 'complete'                        | complete |
+| 参数            | 说明                                             | 类型                                                    | 默认值   |
+| --------------- | ------------------------------------------------ | ------------------------------------------------------- | -------- |
+| toolbar         | 底部工具栏配置项，可选择是否显示或自定义展示功能 | boolean \| ('copy' \| 'reset' \| 'like' \| 'dislike')[] | false    |
+| feedback        | 赞 / 踩的值                                      | number                                                  | 无       |
+| placement       | 信息位置                                         | 'start' \| 'end'                                        | 'start'  |
+| avatar          | 头像信息                                         | BubbleAvatarProps \| boolean \| slot                    | false    |
+| loading         | 加载状态                                         | boolean                                                 | false    |
+| isCollapse      | 展示收起按钮                                     | boolean                                                 | false    |
+| collapseOptions | 展示收起按钮配置                                 | CollapseOptions                                         |          |
+| size            | 气泡尺寸设定                                     | 'auto' \| 'fill'                                        | 'auto'   |
+| status          | 当前流式数据状态，用于可以折叠判断               | 'wait' \| 'output' \| 'complete'                        | complete |
 
 ### 事件
 
@@ -134,6 +135,13 @@ app.use(Bubble);
 | ----- | ---------------- | ------ | ------ |
 | src   | 头像的图片源地址 | string | 无     |
 | title | 头像的标题       | string | 无     |
+
+### CollapseOptions 类型定义
+
+| 参数         | 说明             | 类型    | 默认值 |
+| ------------ | ---------------- | ------- | ------ |
+| defaultValue | 默认展示收起状态 | boolean | false  |
+| maxHeight    | 最大高度         | number  | 200    |
 
 ### BubbleActionOptions 类型定义
 

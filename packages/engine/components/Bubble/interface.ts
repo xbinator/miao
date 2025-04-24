@@ -13,6 +13,13 @@ export interface BubbleToolbarProps {
   feedback?: number;
 }
 
+export interface CollapseOptions {
+  // 默认值
+  defaultValue?: boolean;
+  // 最大高度
+  maxHeight?: number;
+}
+
 export interface BubbleProps extends BubbleToolbarProps {
   // 信息位置
   placement?: 'start' | 'end';
@@ -20,8 +27,10 @@ export interface BubbleProps extends BubbleToolbarProps {
   avatar?: BubbleAvatarProps | boolean;
   // 加载状态
   loading?: boolean;
+  // 是否使用
+  isCollapse?: boolean;
   // 展示收起按钮
-  collapse?: boolean;
+  collapseOptions?: CollapseOptions;
   // 尺寸
   size?: 'auto' | 'fill';
   // 流式数据状态
