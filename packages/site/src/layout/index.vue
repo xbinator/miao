@@ -1,7 +1,7 @@
 <template>
-  <div :class="$style.layout">
+  <div ref="containerRef" :class="$style.layout">
     <div :class="$style.layout__header">
-      <div :class="$style.layout__header__left">
+      <div :class="$style.layout__header__left" @click="handleTilteClick">
         <div :class="$style.layout__header__logo">M</div>
         <div :class="$style.layout__header__title">
           <div>Miao Chat Design</div>
@@ -21,6 +21,10 @@
       </div>
     </div>
 
+    <div :class="$style.layout__sidebar">
+      <div @click="visible.menu = !visible.menu">目录</div>
+    </div>
+
     <div :class="$style.layout__main">
       <div :class="$style.layout__aside">
         <Menu :menus="dataSource" :active-menu-item="activeMenuItem" />
@@ -32,18 +36,26 @@
           <RouterView />
         </div>
 
-        <Simulator v-if="currentMenuItem?.simulator" />
+        <Simulator v-if="currentMenuItem?.simulator" :class="$style.layout__main__simulator" />
       </div>
     </div>
+
+    <ADrawer v-model:open="visible.menu" :closable="false" placement="left" width="80%">
+      <Menu :class="$style.layout__drawer__menu" :menus="dataSource" :active-menu-item="activeMenuItem" />
+    </ADrawer>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-import { RouterLink } from 'vue-router';
+import { computed, reactive, watch } from 'vue';
+import { RouterLink, useRouter } from 'vue-router';
+import { useWindowSize } from '@vueuse/core';
 import Menu from './Menu.vue';
 import { useMenu } from '@/hooks/useMenu';
 import Simulator from '@/components/Simulator.vue';
+
+const router = useRouter();
+const { width, height } = useWindowSize();
 
 const nav = [
   { label: '文档', value: 'docs' },
@@ -54,6 +66,16 @@ const nav = [
 const { dataSource, activeMenuItem, currentMenuItem } = useMenu();
 
 const activeNav = computed(() => activeMenuItem.value.split('/').at(1));
+
+const visible = reactive({ menu: false });
+
+function handleTilteClick() {
+  router.push('/');
+}
+
+function updateNavStyle() {
+  console.log('updateNavStyle');
+}
 </script>
 
 <style lang="less" module>
@@ -77,6 +99,7 @@ const activeNav = computed(() => activeMenuItem.value.split('/').at(1));
 .layout__header__left {
   display: flex;
   align-items: center;
+  cursor: pointer;
 }
 
 .layout__header__logo {
@@ -336,10 +359,47 @@ const activeNav = computed(() => activeMenuItem.value.split('/').at(1));
   }
 }
 
+.layout__sidebar {
+  display: none;
+  align-items: center;
+  height: 48px;
+  padding: 0 20px;
+  border-bottom: 1px solid rgb(5 5 5 / 6%);
+}
+
+.layout__drawer__menu {
+  padding: 0;
+  border-inline-end-width: 0 !important;
+}
+
 @media (width >= 2080px) {
   .layout__main__content {
     flex: 0 1 auto;
     width: 1200px;
+  }
+}
+
+@media (width < 1440px) {
+  .layout__main__simulator {
+    display: none;
+  }
+
+  .layout__main__content {
+    margin: 0;
+  }
+}
+
+@media (width < 800px) {
+  .layout__sidebar {
+    display: flex;
+  }
+
+  .layout__header__nav {
+    display: none;
+  }
+
+  .layout__aside {
+    display: none;
   }
 }
 </style>
