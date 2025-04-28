@@ -40,8 +40,8 @@
       </div>
     </div>
 
-    <ADrawer v-model:open="visible.menu" :closable="false" placement="left" width="80%">
-      <Menu :class="$style.layout__drawer__menu" :menus="dataSource" :active-menu-item="activeMenuItem" />
+    <ADrawer v-model:open="visible.menu" :closable="false" placement="left" width="80%" :body-style="{ padding: 0 }">
+      <Menu :class="$style.layout__drawer__menu" :menus="dataSource" :active-menu-item="activeMenuItem" @select="handleSelectMenu" />
     </ADrawer>
   </div>
 </template>
@@ -55,7 +55,7 @@ import { useMenu } from '@/hooks/useMenu';
 import Simulator from '@/components/Simulator.vue';
 
 const router = useRouter();
-const { width, height } = useWindowSize();
+const { width } = useWindowSize();
 
 const nav = [
   { label: '文档', value: 'docs' },
@@ -73,9 +73,16 @@ function handleTilteClick() {
   router.push('/');
 }
 
-function updateNavStyle() {
-  console.log('updateNavStyle');
+function handleSelectMenu() {
+  visible.menu = false;
 }
+
+watch(
+  () => width.value,
+  () => {
+    visible.menu = false;
+  }
+);
 </script>
 
 <style lang="less" module>
@@ -161,7 +168,7 @@ function updateNavStyle() {
 .layout__aside {
   width: 25%;
   min-width: 260px;
-  max-width: 350px;
+  max-width: 280px;
   height: 100%;
   background-color: #fff;
 }
@@ -400,6 +407,10 @@ function updateNavStyle() {
 
   .layout__aside {
     display: none;
+  }
+
+  .layout__main__container {
+    padding: 20px;
   }
 }
 </style>
