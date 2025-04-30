@@ -1,5 +1,5 @@
 <template>
-  <AMenu class="aside-container" mode="inline" :selected-keys="[activeMenuItem]">
+  <AMenu class="aside-container" mode="inline" :selected-keys="[activeMenuItem]" @select="handleSelectMenu">
     <template v-for="item in menus" :key="item.title">
       <AMenuItemGroup v-if="(item as MenuGroup).children" :title="item.title">
         <AMenuItem v-for="child in (item as MenuGroup).children" :key="child.path">
@@ -19,11 +19,16 @@ import type { MenuItem, MenuGroup } from '@/hooks/useMenu';
 
 interface Props {
   menus?: MenuItem[] | MenuGroup[];
-  // 当前选中的菜单
   activeMenuItem?: string;
 }
 
 withDefaults(defineProps<Props>(), { menus: () => [], activeMenuItem: '' });
+
+const emit = defineEmits(['select']);
+
+function handleSelectMenu() {
+  emit('select');
+}
 </script>
 
 <style lang="less">

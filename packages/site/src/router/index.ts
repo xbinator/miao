@@ -44,7 +44,8 @@ const routes: RouteRecordRaw[] = [
         meta: { title: '独立式' }
       }
     ]
-  }
+  },
+  { path: '/:allMatch(.*)*', name: 'NotFound', redirect: '/docs/introduce' }
 ];
 
 export default createRouter({
