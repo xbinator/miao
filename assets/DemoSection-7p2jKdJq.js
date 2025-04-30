@@ -1,0 +1,1 @@
+import{aM as s,aE as o,aC as n,aR as t,aK as c}from"./index-C5vDfVE0.js";const a="_demoSection_w1wxe_1",_={demoSection:a},l={};function r(e,i){return n(),o("div",{class:c(e.$style.demoSection)},[t(e.$slots,"default")],2)}const d={$style:_},u=s(l,[["render",r],["__cssModules",d]]);export{u as _};
