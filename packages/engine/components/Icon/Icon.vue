@@ -33,11 +33,11 @@ const wrapStyle = computed(() => {
 
 <style lang="less">
 @font-face {
-  font-family: 'iconfont';
+  font-family: iconfont;
   src: url('./styles/iconfont.woff2') format('woff2');
 }
 
 .m-icon {
-  font-family: 'iconfont' !important;
+  font-family: iconfont !important;
 }
 </style>
