@@ -8,14 +8,14 @@
         :class="bem('textarea')"
         enterkeyhint="send"
         :placeholder="placeholder"
-        :readonly="loading"
+        :disabled="loading"
         @keydown="handleTextareaEvent"
       ></textarea>
 
-      <SpeechInput v-else @complete="handleSendVoice" />
+      <SpeechInput v-else @complete="handleSendRecorder" />
 
-      <!-- 录音 -->
-      <div v-if="isSupported && allowSpeech && !input" :class="bem('speech-button')" @click="toggleSpeechInput">
+      <!-- 麦克风 -->
+      <div v-if="isSupported && allowSpeech && !input && !loading" :class="bem('speech-button')" @click="toggleSpeechInput">
         <Icon :type="inputType === 'text' ? '&#xe73b;' : '&#xe700;'" />
       </div>
     </div>
@@ -41,7 +41,7 @@ import SpeechInput from './components/SpeechInput.vue';
 import { useRecording } from './hooks/useRecording';
 import { useMicrophone } from './hooks/useMicrophone';
 
-type InputType = 'text' | 'voice';
+type InputType = 'text' | 'recorder';
 
 const props = withDefaults(defineProps<SenderProps>(), { loading: false, placeholder: '请输入', allowSpeech: false });
 
@@ -64,17 +64,17 @@ const { microphonePermission } = useMicrophone();
 const inputType = ref<InputType>('text');
 
 function handleSend() {
-  const value = input.value.trim();
+  const content = input.value.trim();
 
-  if (props.loading || !value) return;
+  if (props.loading || !content) return;
 
   textarea.value?.blur();
 
-  emit('send', { value, mode: 'text' });
+  emit('send', { content, type: 'text' });
 }
 
-function handleSendVoice(voice: Blob) {
-  emit('send', { value: voice, mode: 'voice' });
+function handleSendRecorder(file: Blob) {
+  emit('send', { file, type: 'recorder' });
 }
 
 function handleTextareaEvent(event: KeyboardEvent) {
@@ -87,9 +87,9 @@ function handleTextareaEvent(event: KeyboardEvent) {
 
 async function toggleSpeechInput() {
   // 切换输入方式
-  let type: InputType = inputType.value === 'text' ? 'voice' : 'text';
+  let type: InputType = inputType.value === 'text' ? 'recorder' : 'text';
   // 不允许使用麦克风
-  if (type === 'voice' && (await microphonePermission()) !== 'granted') {
+  if (type === 'recorder' && (await microphonePermission()) !== 'granted') {
     type = 'text';
 
     emit('actions', { name: 'error', message: 'Microphone Permission denied' });
@@ -129,6 +129,10 @@ function handleCancel() {
     display: block;
     background: rgb(63 63 63 / 20%);
     border-radius: 2px;
+  }
+
+  &:disabled {
+    background-color: transparent;
   }
 }
 

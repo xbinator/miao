@@ -8,7 +8,7 @@
       {{ isCancelled ? '松手取消' : '松手发送，上移取消' }}
     </div>
 
-    <div v-for="(height, index) in voiceHeights" :key="index" :style="{ height }" :class="bem('bar')"></div>
+    <div v-for="(height, index) in speechHeights" :key="index" :style="{ height }" :class="bem('bar')"></div>
   </div>
 </template>
 
@@ -22,9 +22,9 @@ import { useTouch } from '../hooks/useTocuch';
 
 const [name, bem] = createNamespace('speech-input');
 
-const emit = defineEmits<{ (e: 'actions', options: SenderSpeechActionOptions): void; (e: 'complete', voice: Blob): void }>();
+const emit = defineEmits<{ (e: 'actions', options: SenderSpeechActionOptions): void; (e: 'complete', file: Blob): void }>();
 
-const voiceHeights = ref<string[]>([]);
+const speechHeights = ref<string[]>([]);
 const containerRef = ref<HTMLElement>();
 
 function onFrequencyUpdate(v: number[]) {
@@ -36,12 +36,12 @@ function onFrequencyUpdate(v: number[]) {
     i !== 0 && (heights[v.length + i - 1] = `${v[i]}px`);
   }
 
-  voiceHeights.value = heights;
+  speechHeights.value = heights;
 }
 
 const { enabled, stop, start, stream } = useRecording({ onFrequencyUpdate, column: 10 });
 
-const { startRecording, stopRecording, getVoiceBlob } = useMediaRecorder(stream);
+const { startRecording, stopRecording, getFrameBuffer } = useMediaRecorder(stream);
 
 function stopSpeech() {
   stop();
@@ -58,11 +58,11 @@ async function onStart() {
 function onEnd() {
   stopSpeech();
 
-  const voiceBlob = getVoiceBlob();
+  const frameBuffer = getFrameBuffer();
 
-  if (!voiceBlob?.size) return;
+  if (!frameBuffer?.size) return;
 
-  emit('complete', voiceBlob);
+  emit('complete', frameBuffer);
 }
 
 function onCancel() {

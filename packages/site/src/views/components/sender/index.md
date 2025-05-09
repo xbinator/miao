@@ -55,7 +55,7 @@ const value = ref('Hello? this is M!');
 
 | 事件    | 说明             | 回调参数                                                                              |
 | ------- | ---------------- | ------------------------------------------------------------------------------------- |
-| send    | 发送按钮点击事件 | ({ value: string; mode: 'text' }) => void \| ({ value: Blob; mode: 'voice' }) => void |
+| send    | 发送按钮点击事件 | ({ content: string; type: 'text' }) => void \| ({ file: Blob; type: 'recorder' }) => void |
 | actions | 操作回调事件     | (options: SenderActionOptions) => void                                                |
 
 ### SenderActionOptions 类型定义

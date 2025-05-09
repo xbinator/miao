@@ -17,4 +17,4 @@ export interface SenderSpeechActionOptions {
 
 export type SenderActionOptions = SenderSpeechActionOptions;
 
-export type SenderResult = { value: string; mode: 'text' } | { value: Blob; mode: 'voice' };
+export type SenderResult = { content: string; type: 'text' } | { file: Blob; type: 'recorder' };
