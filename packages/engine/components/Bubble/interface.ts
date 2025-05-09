@@ -22,7 +22,7 @@ export interface CollapseOptions {
 
 export interface BubbleProps extends BubbleToolbarProps {
   // 信息位置
-  placement?: 'start' | 'end';
+  placement?: 'left' | 'right';
   // 头像信息
   avatar?: BubbleAvatarProps | boolean;
   // 加载状态

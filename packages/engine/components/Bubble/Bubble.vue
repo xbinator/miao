@@ -7,12 +7,12 @@
     </div>
 
     <div :class="bem('main')">
-      <div v-if="loading && placement === 'start'" :class="bem('container')">
+      <div v-if="loading && placement === 'left'" :class="bem('container')">
         <Loading type="dot" />
       </div>
 
       <template v-else>
-        <template v-if="placement === 'end'">
+        <template v-if="placement === 'right'">
           <Loading v-if="loading" type="circle" :class="bem('loading')" />
         </template>
         <!-- 气泡容器 -->
@@ -27,7 +27,7 @@
     </div>
 
     <!-- 底部工具栏 -->
-    <Toolbar v-if="status === 'complete' && placement === 'start'" :toolbar="toolbar" @actions="handleToolAction" />
+    <Toolbar v-if="status === 'complete' && placement === 'left'" :toolbar="toolbar" @actions="handleToolAction" />
 
     <slot name="footer"></slot>
   </div>
@@ -44,7 +44,7 @@ import useCollapse from './hooks/useCollapse';
 import ButtonCollapse from './components/ButtonCollapse.vue';
 import Loading from './components/Loading.vue';
 
-const props = withDefaults(defineProps<BubbleProps>(), { placement: 'start', avatar: undefined, status: 'complete', collapse: undefined, size: 'auto' });
+const props = withDefaults(defineProps<BubbleProps>(), { placement: 'left', avatar: undefined, status: 'complete', collapse: undefined, size: 'auto' });
 
 const emit = defineEmits<{ (e: 'actions', options: BubbleActionOptions): void }>();
 
@@ -54,7 +54,7 @@ const contentRef = ref<HTMLDivElement>();
 
 const { collapse } = useCollapse(contentRef, () => props, props.collapseOptions);
 
-const shouldShowCollapseButton = computed(() => props.placement === 'start' && collapse.visible && props.isCollapse);
+const shouldShowCollapseButton = computed(() => props.placement === 'left' && collapse.visible && props.isCollapse);
 
 function handleToolAction(options: BubbleActionOptions) {
   emit('actions', options);
@@ -67,20 +67,20 @@ function handleToolAction(options: BubbleActionOptions) {
   flex-direction: column;
   margin: 20px 12px 0;
 
-  &.m-bubble--start + .m-bubble--start,
-  &.m-bubble--end + .m-bubble--end {
+  &.m-bubble--left + .m-bubble--left,
+  &.m-bubble--right + .m-bubble--right {
     margin-top: 6px;
   }
 }
 
-.m-bubble--start {
+.m-bubble--left {
   .m-bubble__container {
     background: #fff;
     border-radius: 2px 12px 12px;
   }
 }
 
-.m-bubble--end {
+.m-bubble--right {
   align-items: flex-end;
 
   .m-bubble__container {

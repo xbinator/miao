@@ -2,15 +2,15 @@
   <DemoSection>
     <MBubble> hello world </MBubble>
 
-    <MBubble placement="start" avatar> 哦！你好啊！我是蒙奇·D·路飞！我要成为海贼王的男人！ </MBubble>
+    <MBubble placement="left" avatar> 哦！你好啊！我是蒙奇·D·路飞！我要成为海贼王的男人！ </MBubble>
 
-    <MBubble placement="start" :avatar="{ src: image, title: '路飞' }"> 嘿嘿！你是谁啊？要不要一起吃肉？ </MBubble>
+    <MBubble placement="left" :avatar="{ src: image, title: '路飞' }"> 嘿嘿！你是谁啊？要不要一起吃肉？ </MBubble>
 
-    <MBubble placement="end" :avatar="{ src: image, title: '路飞' }"> 喂——！！ </MBubble>
+    <MBubble placement="right" :avatar="{ src: image, title: '路飞' }"> 喂——！！ </MBubble>
 
-    <MBubble placement="end" :avatar="{ src: image }"> 吃吃吃！你就知道吃！钱才是最重要的好吗？ </MBubble>
+    <MBubble placement="right" :avatar="{ src: image }"> 吃吃吃！你就知道吃！钱才是最重要的好吗？ </MBubble>
 
-    <MBubble placement="end">
+    <MBubble placement="right">
       <template #avatar>路飞</template>
       海贼王，我当定了！
     </MBubble>
@@ -31,7 +31,7 @@
 
     <MBubble loading> hello world </MBubble>
 
-    <MBubble loading placement="end"> hello world </MBubble>
+    <MBubble loading placement="right"> hello world </MBubble>
 
     <MBubble :is-collapse="true">
       先帝创业未半而中道崩殂，今天下三分，益州疲弊，此诚危急存亡之秋也。然侍卫之臣不懈于内，忠志之士忘身于外者，盖追先帝之殊遇，欲报之于陛下也。诚宜开张圣听，以光先帝遗德，恢弘志士之气，不宜妄自菲薄，引喻失义，以塞忠谏之路也。

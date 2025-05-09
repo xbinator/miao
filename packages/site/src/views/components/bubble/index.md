@@ -36,18 +36,18 @@ app.use(Bubble);
 
 ### 支持位置和头像
 
-通过 avatar 设置自定义头像，通过 placement 设置位置，提供了 start、end 两个选项
+通过 avatar 设置自定义头像，通过 placement 设置位置，提供了 left、end 两个选项
 
 ```html
-<MBubble placement="start" avatar> 哦！你好啊！我是蒙奇·D·路飞！我要成为海贼王的男人！ </MBubble>
+<MBubble placement="left" avatar> 哦！你好啊！我是蒙奇·D·路飞！我要成为海贼王的男人！ </MBubble>
 
-<MBubble placement="start" :avatar="{ src: image, title: '路飞' }"> 嘿嘿！你是谁啊？要不要一起吃肉？ </MBubble>
+<MBubble placement="left" :avatar="{ src: image, title: '路飞' }"> 嘿嘿！你是谁啊？要不要一起吃肉？ </MBubble>
 
-<MBubble placement="end" :avatar="{ src: image, title: '路飞' }"> 喂——！！ </MBubble>
+<MBubble placement="right" :avatar="{ src: image, title: '路飞' }"> 喂——！！ </MBubble>
 
-<MBubble placement="end" :avatar="{ src: image }"> 吃吃吃！你就知道吃！钱才是最重要的好吗？ </MBubble>
+<MBubble placement="right" :avatar="{ src: image }"> 吃吃吃！你就知道吃！钱才是最重要的好吗？ </MBubble>
 
-<MBubble placement="end">
+<MBubble placement="right">
   <template #avatar>路飞</template>
   海贼王，我当定了！
 </MBubble>
@@ -86,7 +86,7 @@ app.use(Bubble);
 ```html
 <MBubble loading> hello world </MBubble>
 
-<MBubble loading placement="end"> hello world </MBubble>
+<MBubble loading placement="right"> hello world </MBubble>
 ```
 
 ### 支持展开与收起
@@ -115,7 +115,7 @@ app.use(Bubble);
 | --------------- | ------------------------------------------------ | ------------------------------------------------------- | -------- |
 | toolbar         | 底部工具栏配置项，可选择是否显示或自定义展示功能 | boolean \| ('copy' \| 'reset' \| 'like' \| 'dislike')[] | false    |
 | feedback        | 赞 / 踩的值                                      | number                                                  | 无       |
-| placement       | 信息位置                                         | 'start' \| 'end'                                        | 'start'  |
+| placement       | 信息位置                                         | 'left' \| 'right'                                        | 'left'  |
 | avatar          | 头像信息                                         | BubbleAvatarProps \| boolean \| slot                    | false    |
 | loading         | 加载状态                                         | boolean                                                 | false    |
 | isCollapse      | 展示收起按钮                                     | boolean                                                 | false    |
