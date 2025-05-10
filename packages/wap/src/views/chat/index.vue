@@ -1,15 +1,46 @@
 <template>
-  <MLayout allow-speech class="page-layout" @send="handleMessageSend" @actions="handleActions">
-    <MBubbleText :content="'234324'" />
+  <MLayout v-model:value="inputText" :loading="loading" allow-speech class="page-layout" @send="handleSend" @actions="handleActions">
+    <template v-for="item in messages" :key="item.messageId">
+      <MBubbleText :placement="item.role === 'assistant' ? 'left' : 'right'" :content="item.content" />
+    </template>
   </MLayout>
 </template>
 
 <script setup lang="ts">
+import type { Message } from '@/services/chat/type';
 import type { LayoutActionOptions, SenderResult } from '@miao/engine';
-import { Layout as MLayout, BubbleText as MBubbleText } from '@miao/engine';
+import { ref } from 'vue';
+import { uniqueId } from 'lodash-es';
+import { sendMessage } from '@/services/chat';
 
-function handleMessageSend(a: SenderResult) {
-  console.log(a);
+const inputText = ref('');
+
+const messages = ref<Message[]>([]);
+
+const { start, loading } = sendMessage();
+
+function onMessage(message: Message) {
+  const index = messages.value.findLastIndex((item) => item.messageId === message.messageId);
+
+  if (index === -1) {
+    messages.value.push(message);
+
+    return;
+  }
+
+  const exist = messages.value[index];
+
+  messages.value[index] = { ...exist, ...message, content: (exist.content || '') + (message.content || '') };
+}
+
+function handleSend(result: SenderResult) {
+  const data: Message = { ...result, role: 'user', messageId: uniqueId() };
+
+  messages.value.push(data);
+
+  start({ data, onMessage });
+
+  inputText.value = '';
 }
 
 function handleActions(options: LayoutActionOptions) {

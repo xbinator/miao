@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@miao/engine": "workspace:*",
+    "lodash-es": "^4.17.21",
     "pinia": "^3.0.2",
     "vconsole": "^3.15.1",
     "vite-plugin-html": "^3.2.2",
@@ -17,12 +18,14 @@
     "vue-router": "^4.5.0"
   },
   "devDependencies": {
+    "@types/lodash-es": "^4.17.12",
     "@vitejs/plugin-vue": "^5.2.1",
     "@vue/tsconfig": "^0.7.0",
     "install": "^0.13.0",
     "less": "^4.2.2",
     "postcss-px-to-viewport": "^1.1.1",
     "typescript": "~5.7.2",
+    "unplugin-vue-components": "^0.27.5",
     "vite": "^6.2.0",
     "vue-tsc": "^2.2.4"
   }
