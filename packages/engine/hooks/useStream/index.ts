@@ -1,4 +1,3 @@
-import type { EventSourceMessage } from './parse';
 import { ref } from 'vue';
 import { getBytes, getLines, getMessages } from './parse';
 
@@ -16,13 +15,9 @@ interface UseStreamRequestOptions<T> {
   onError?: (error: Error) => void;
 }
 
-interface UseStreamOptions {
+interface UseStreamConfig {
   // 请求方法，默认 POST
   method?: 'GET' | 'POST';
-  // 请求头
-  headers?: HeadersInit;
-  // 数据转换
-  transformStream?: (chunk: EventSourceMessage) => string;
 }
 
 export function isSpecialRequestBody(data: any) {
@@ -37,15 +32,19 @@ export function isBodyData(data: any) {
   return typeof data === 'string' || isSpecialRequestBody(data);
 }
 
-export function useStream<T = any>(url: string, { transformStream, method = 'POST', headers = { 'Content-Type': 'application/json' } }: UseStreamOptions = {}) {
+export function useStream<T = any>(url: string, config: UseStreamConfig = {}) {
   const loading = ref(false);
 
   let abortController: AbortController | null = null;
+
+  const { method = 'POST' } = config;
 
   const start = async (options: UseStreamRequestOptions<T> = {}) => {
     loading.value = true;
 
     const { onMessage, onFinish, onError } = options;
+
+    const headers = { 'Content-Type': 'application/json' };
 
     let body = (isBodyData(options.data) ? options.data : JSON.stringify(options.data)) as BodyInit | null | undefined;
 
@@ -60,7 +59,7 @@ export function useStream<T = any>(url: string, { transformStream, method = 'POS
         throw new Error('Response body is null or not a stream');
       }
 
-      await getBytes(response.body, getLines(getMessages(onMessage, transformStream)));
+      await getBytes(response.body, getLines(getMessages(onMessage)));
 
       onFinish?.();
     } catch (err: any) {

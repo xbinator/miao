@@ -29,6 +29,14 @@ function concat(a: Uint8Array, b: Uint8Array) {
   return res;
 }
 
+function tryit<T = any>(fn: () => T) {
+  try {
+    return fn();
+  } catch (e) {
+    return undefined;
+  }
+}
+
 export async function getBytes(stream: ReadableStream<Uint8Array>, onChunk: (arr: Uint8Array) => void) {
   const reader = stream.getReader();
 
@@ -53,16 +61,15 @@ export function getLines(onLine: (line: Uint8Array, fieldLength: number) => void
       position = 0;
       fieldLength = -1;
     } else {
-      // we're still parsing the old line. Append the new bytes into buffer:
       buffer = concat(buffer, arr);
     }
 
     const bufLength = buffer.length;
-    let lineStart = 0; // index where the current line starts
+    let lineStart = 0;
     while (position < bufLength) {
       if (discardTrailingNewline) {
         if (buffer[position] === ControlChars.NewLine) {
-          lineStart = ++position; // skip to next char
+          lineStart = ++position;
         }
 
         discardTrailingNewline = false;
@@ -73,11 +80,9 @@ export function getLines(onLine: (line: Uint8Array, fieldLength: number) => void
         switch (buffer[position]) {
           case ControlChars.Colon:
             if (fieldLength === -1) {
-              // first colon in line
               fieldLength = position - lineStart;
             }
             break;
-          // @ts-ignore:7029 \r case below should fallthrough to \n:
           case ControlChars.CarriageReturn:
             discardTrailingNewline = true;
             break;
@@ -89,35 +94,31 @@ export function getLines(onLine: (line: Uint8Array, fieldLength: number) => void
       }
 
       if (lineEnd === -1) {
-        // We reached the end of the buffer but the line hasn't ended.
-        // Wait for the next arr and then continue parsing:
         break;
       }
 
-      // we've reached the line end, send it out:
       onLine(buffer.subarray(lineStart, lineEnd), fieldLength);
-      lineStart = position; // we're now on the next line
+      lineStart = position;
       fieldLength = -1;
     }
 
     if (lineStart === bufLength) {
-      buffer = undefined; // we've finished reading it
+      buffer = undefined;
     } else if (lineStart !== 0) {
-      // Create a new view into buffer beginning at lineStart so we don't
-      // need to copy over the previous lines when we get the new arr:
       buffer = buffer.subarray(lineStart);
+
       position -= lineStart;
     }
   };
 }
 
-export function getMessages(onMessage?: (msg: EventSourceMessage) => void, transformStream?: (msg: EventSourceMessage) => any) {
+export function getMessages(onMessage?: (msg: EventSourceMessage) => void) {
   let message = newMessage();
   const decoder = new TextDecoder();
 
   return function onLine(line: Uint8Array, fieldLength: number) {
     if (line.length === 0) {
-      const _message = transformStream?.(message) || message;
+      const _message = tryit(() => JSON.parse(message.data));
 
       onMessage?.(_message);
 
@@ -129,7 +130,7 @@ export function getMessages(onMessage?: (msg: EventSourceMessage) => void, trans
 
       switch (field) {
         case 'data':
-          message.data = message.data ? `${message.data}\n${value}` : value; // otherwise,
+          message.data = message.data ? `${message.data}\n${value}` : value;
           break;
         case 'event':
           message.event = value;
