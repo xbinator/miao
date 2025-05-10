@@ -196,7 +196,9 @@ module.exports = {
     // 不允许使用一元运算符++和--
     'no-plusplus': 'off',
     //
-    '@typescript-eslint/ban-ts-comment': 'off'
+    '@typescript-eslint/ban-ts-comment': 'off',
+    //
+    'consistent-return': 'off'
   },
   overrides: [
     {
