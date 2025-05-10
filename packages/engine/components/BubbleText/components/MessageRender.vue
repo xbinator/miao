@@ -1,5 +1,6 @@
 <template>
-  <div :class="name" v-html="text"></div>
+  <div v-if="mode === 'markdown'" :class="name" v-html="md"></div>
+  <div v-else :class="name" v-text="content"></div>
 </template>
 
 <script setup lang="ts">
@@ -7,14 +8,17 @@ import { computed } from 'vue';
 import { createNamespace, Markdown } from '../../utils';
 
 interface Props {
+  // 模式
+  mode?: 'markdown' | 'text';
+  // 文本内容
   content: string;
 }
 
-const props = withDefaults(defineProps<Props>(), { content: '' });
+const props = withDefaults(defineProps<Props>(), { content: '', mode: 'text' });
 
 const [name] = createNamespace('message-render');
 
-const text = computed(() => Markdown(props.content));
+const md = computed(() => Markdown(props.content));
 </script>
 
 <style lang="less">

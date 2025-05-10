@@ -23,7 +23,7 @@
       </div>
 
       <!-- 回答 -->
-      <MessageRender :content="typedContent" />
+      <MessageRender :content="typedContent" :mode="placement === 'left' ? 'markdown' : 'text'" />
     </div>
   </Bubble>
 </template>
