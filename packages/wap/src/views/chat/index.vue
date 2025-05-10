@@ -11,13 +11,13 @@ import type { Message } from '@/services/chat/type';
 import type { LayoutActionOptions, SenderResult } from '@miao/engine';
 import { ref } from 'vue';
 import { uniqueId } from 'lodash-es';
-import { sendMessage } from '@/services/chat';
+import { useStream } from '@miao/engine';
 
 const inputText = ref('');
 
 const messages = ref<Message[]>([]);
 
-const { start, loading } = sendMessage();
+const { start, loading } = useStream('');
 
 function onMessage(message: Message) {
   const index = messages.value.findLastIndex((item) => item.messageId === message.messageId);
@@ -38,7 +38,11 @@ function handleSend(result: SenderResult) {
 
   messages.value.push(data);
 
-  start({ data, onMessage });
+  const output = '';
+
+  start({ data, onMessage: (message: Message) => {
+
+  } });
 
   inputText.value = '';
 }
