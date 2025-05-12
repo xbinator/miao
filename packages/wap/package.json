@@ -12,6 +12,7 @@
     "@miao/engine": "workspace:*",
     "lodash-es": "^4.17.21",
     "pinia": "^3.0.2",
+    "uuid": "^11.1.0",
     "vconsole": "^3.15.1",
     "vite-plugin-html": "^3.2.2",
     "vue": "^3.5.13",

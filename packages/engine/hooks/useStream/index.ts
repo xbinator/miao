@@ -18,6 +18,8 @@ interface UseStreamRequestOptions<T> {
 interface UseStreamConfig {
   // 请求方法，默认 POST
   method?: 'GET' | 'POST';
+  // 请求头
+  headers?: HeadersInit;
 }
 
 export function isSpecialRequestBody(data: any) {
@@ -39,12 +41,12 @@ export function useStream<T = any>(url: string, config: UseStreamConfig = {}) {
 
   const { method = 'POST' } = config;
 
-  const start = async (options: UseStreamRequestOptions<T> = {}) => {
+  const create = async (options: UseStreamRequestOptions<T> = {}) => {
     loading.value = true;
 
     const { onMessage, onFinish, onError } = options;
 
-    const headers = { 'Content-Type': 'application/json' };
+    const headers = { 'Content-Type': 'application/json', ...config.headers };
 
     let body = (isBodyData(options.data) ? options.data : JSON.stringify(options.data)) as BodyInit | null | undefined;
 
@@ -79,7 +81,6 @@ export function useStream<T = any>(url: string, config: UseStreamConfig = {}) {
 
   return {
     loading,
-    start,
-    abort
+    stream: { create, abort }
   };
 }

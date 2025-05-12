@@ -1,48 +1,48 @@
 <template>
   <MLayout v-model:value="inputText" :loading="loading" allow-speech class="page-layout" @send="handleSend" @actions="handleActions">
     <template v-for="item in messages" :key="item.messageId">
-      <MBubbleText :placement="item.role === 'assistant' ? 'left' : 'right'" :content="item.content" />
+      <MBubbleText :placement="PLACEMENT[item.userType]" :content="item.text" />
     </template>
   </MLayout>
 </template>
 
 <script setup lang="ts">
-import type { Message } from '@/services/chat/type';
 import type { LayoutActionOptions, SenderResult } from '@miao/engine';
 import { ref } from 'vue';
-import { uniqueId } from 'lodash-es';
 import { useStream } from '@miao/engine';
+import { v4 as uuid } from 'uuid';
+import { UserType, type Message } from '@/views/chat/type';
 
 const inputText = ref('');
 
 const messages = ref<Message[]>([]);
 
-const { start, loading } = useStream('');
+const PLACEMENT: Record<UserType, 'right' | 'left'> = { [UserType.SENDER]: 'right', [UserType.RECEIVER]: 'left' };
 
-function onMessage(message: Message) {
-  const index = messages.value.findLastIndex((item) => item.messageId === message.messageId);
+const { stream, loading } = useStream('http://localhost:3000/chat/completion');
 
-  if (index === -1) {
-    messages.value.push(message);
+function buildNewMessage(result: SenderResult) {
+  const messageId = uuid();
 
-    return;
+  const localMessage: Message = { userType: UserType.RECEIVER, messageId, contentType: result.type };
+
+  if (result.type === 'text') {
+    localMessage.text = result.content;
+  } else if (result.type === 'recorder') {
+    localMessage.file = result.file;
   }
 
-  const exist = messages.value[index];
-
-  messages.value[index] = { ...exist, ...message, content: (exist.content || '') + (message.content || '') };
+  return { ...localMessage, messageId };
 }
-
 function handleSend(result: SenderResult) {
-  const data: Message = { ...result, role: 'user', messageId: uniqueId() };
+  const messageId = uuid();
 
-  messages.value.push(data);
+  messages.value.push({ userType: UserType.SENDER, text: result.content, messageId, contentType: result.type });
 
-  const output = '';
-
-  start({ data, onMessage: (message: Message) => {
-
-  } });
+  stream.create({
+    data: {},
+    onMessage: (message: Message) => {}
+  });
 
   inputText.value = '';
 }
