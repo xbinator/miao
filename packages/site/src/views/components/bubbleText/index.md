@@ -62,11 +62,12 @@ const reasonContent = `好的，用户让我输出《滕王阁序》的全文。
 
 ### Props
 
-| 参数          | 说明                 | 类型                                            | 默认值 |
-| ------------- | -------------------- | ----------------------------------------------- | ------ |
-| typing        | 设置聊天内容打字动画 | boolean \| { step?: number, interval?: number } | false  |
-| content       | 聊天内容             | string                                          | -      |
-| reasonContent | 思考内容             | string                                          | -      |
+| 参数          | 说明                                      | 类型                                            | 默认值 |
+| ------------- | ----------------------------------------- | ----------------------------------------------- | ------ |
+| typing        | 设置聊天内容打字动画                      | boolean \| { step?: number, interval?: number } | false  |
+| content       | 聊天内容                                  | string                                          | -      |
+| reasonContent | 思考内容                                  | string                                          | -      |
+| isMarkdown    | 是否将 content 内容作为 Markdown 格式处理 | boolean                                         | false  |
 
 ### 事件
 

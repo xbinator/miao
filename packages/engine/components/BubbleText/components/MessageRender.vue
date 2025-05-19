@@ -1,24 +1,32 @@
 <template>
-  <div v-if="mode === 'markdown'" :class="name" v-html="md"></div>
-  <div v-else :class="name" v-text="content"></div>
+  <div :class="name" :data-effect="effect" v-html="renderedContent"></div>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import { escape } from 'lodash-es';
 import { createNamespace, Markdown } from '../../utils';
 
 interface Props {
-  // 模式
-  mode?: 'markdown' | 'text';
+  // 是否将 content 内容作为 Markdown 格式处理
+  isMarkdown?: boolean;
   // 文本内容
   content: string;
+  // 雾化效果
+  effect?: null | 'typing';
 }
 
-const props = withDefaults(defineProps<Props>(), { content: '', mode: 'text' });
+const props = withDefaults(defineProps<Props>(), { content: '', isMarkdown: false, effect: null });
 
 const [name] = createNamespace('message-render');
 
-const md = computed(() => Markdown(props.content));
+const renderedContent = computed(() => {
+  if (props.isMarkdown) {
+    return Markdown(props.content);
+  }
+
+  return escape(props.content);
+});
 </script>
 
 <style lang="less">
@@ -56,6 +64,30 @@ const md = computed(() => Markdown(props.content));
 
   .hljs {
     border-radius: 6px;
+  }
+}
+
+[data-effect='typing'] {
+  position: relative;
+  overflow: hidden;
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  ol:last-child li,
+  ul:last-child li {
+    &:last-child::after {
+      position: absolute;
+      width: 80px;
+      height: 1.5em;
+      margin-left: -80px;
+      content: '';
+      background: linear-gradient(90deg, transparent, #fff);
+    }
   }
 }
 </style>

@@ -14,16 +14,17 @@
 
     <div :class="[name]">
       <!-- 深度思考 -->
-      <div v-if="reasonContent" :class="bem('reason-wrapper')">
-        <div :class="bem('reason-title')">
-          <div>深度思考</div>
-          <Icon type="&#xe69b;" :class="bem('reason-collapse')" :rotate="collapse.reason ? 180 : 0" @click="handleReasonCollapse" />
+      <div v-if="reasonContent" :class="bem('reason')">
+        <div :class="bem('reason-toggle')" @click="handleReasonCollapse">
+          <div :class="bem('reason-title')">深度思考</div>
+          <Icon type="&#xe69b;" :class="bem('reason-collapse')" :rotate="collapse.reason ? 180 : 0" />
         </div>
-        <div v-show="!collapse.reason" :class="bem('reason')">{{ typedReasonContent }}</div>
+        <div v-show="!collapse.reason" :class="bem('reason-content')">
+          <MessageRender :effect="effect" :content="typedReasonContent" :is-markdown="isMarkdown" />
+        </div>
       </div>
-
       <!-- 回答 -->
-      <MessageRender :content="typedContent" :mode="placement === 'left' ? 'markdown' : 'text'" />
+      <MessageRender :effect="effect" :content="typedContent" :is-markdown="isMarkdown" />
     </div>
   </Bubble>
 </template>
@@ -57,6 +58,8 @@ const [name, bem] = createNamespace('bubble-text');
 
 const collapse = reactive({ reason: false });
 
+const effect = computed(() => (isTyping.value ? 'typing' : null));
+
 function handleReasonCollapse() {
   collapse.reason = !collapse.reason;
 }
@@ -79,22 +82,28 @@ watch(
   line-height: 26px;
 }
 
-.m-bubble-text__reason-title {
-  display: flex;
+.m-bubble-text__reason-toggle {
+  display: inline-flex;
   align-items: center;
-  font-size: 14px;
-  font-weight: bold;
+  height: 30px;
+  padding: 0 8px;
+  font-size: 12px;
   line-height: 26px;
-  color: #666;
+  cursor: pointer;
+  background-color: #f3f6f8;
+  border-radius: 4px;
+}
+
+.m-bubble-text__reason-title {
+  margin-right: 5px;
 }
 
 .m-bubble-text__reason-collapse {
-  padding: 0 10px 0 5px;
   font-size: 12px;
   line-height: 1;
 }
 
-.m-bubble-text__reason {
+.m-bubble-text__reason-content {
   position: relative;
   padding-left: 14px;
   margin: 10px 0;

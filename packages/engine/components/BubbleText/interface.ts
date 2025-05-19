@@ -11,12 +11,14 @@ export interface TypingOption {
   interval?: number;
 }
 
-export interface BubbleTextProps extends Omit<BubbleProps, 'isTyping' | 'status'> {
+export interface BubbleTextProps extends Omit<BubbleProps, 'status'> {
   typing?: TypingOption | boolean;
 
   content?: string;
 
   reasonContent?: string;
+
+  isMarkdown?: boolean;
 }
 
 export type BubbleTextActionOptions = BubbleActionOptions | { name: 'typing-complete' };
