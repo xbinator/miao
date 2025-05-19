@@ -27,8 +27,8 @@ const [, bem] = createNamespace('bubble-loading');
 <style lang="less">
 .m-bubble-loading__dot {
   position: relative;
-  column-gap: 8px;
   display: flex;
+  column-gap: 8px;
   align-items: center;
   height: 100%;
   min-height: 46px;
@@ -38,8 +38,8 @@ const [, bem] = createNamespace('bubble-loading');
 .m-bubble-loading__dot-item {
   width: 4px;
   height: 4px;
-  border-radius: 100%;
   background-color: rgb(var(--miao-primary-color-value));
+  border-radius: 100%;
   animation-name: miao-loading-move;
   animation-duration: 2s;
   animation-timing-function: linear;
@@ -76,10 +76,10 @@ const [, bem] = createNamespace('bubble-loading');
   height: 100%;
 
   circle {
-    animation: miao-circular 1.5s ease-in-out infinite;
     stroke: currentColor;
     stroke-width: 3;
     stroke-linecap: round;
+    animation: miao-circular 1.5s ease-in-out infinite;
   }
 }
 

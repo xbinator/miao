@@ -34,18 +34,18 @@ function handleClick() {
   width: fit-content;
   height: 24px;
   padding: 0 8px;
-  border: 1px solid #fff;
-  border-radius: 100px;
   font-size: 12px;
   color: #666;
   background: #fff;
+  border: 1px solid #fff;
+  border-radius: 100px;
   transition: all 0.3s;
 
   &.m-attachment-tool--activated {
+    color: rgb(var(--miao-primary-color-value));
+    background-color: rgb(var(--miao-primary-color-value), 0.06);
     border-color: rgb(var(--miao-primary-color-value));
     border-radius: 12px;
-    color: rgb(var(--miao-primary-color-value));
-    background-color: rgba(var(--miao-primary-color-value), 0.06);
   }
 }
 
