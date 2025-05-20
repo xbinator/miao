@@ -1,25 +1,17 @@
 <template>
-  <Bubble
-    :placement="placement"
-    :avatar="avatar"
-    :loading="loading"
-    :status="streamStatus"
-    :toolbar="toolbar"
-    :is-collapse="isCollapse"
-    @actions="handleBubbleAction"
-  >
+  <Bubble :placement="placement" :avatar="avatar" :loading="loading" :state="_state" :toolbar="toolbar" :is-collapse="isCollapse" @actions="handleBubbleAction">
     <template #avatar>
       <slot name="avatar"></slot>
     </template>
 
     <div :class="[name]">
       <!-- 深度思考 -->
-      <div v-if="reasonContent" :class="bem('reason-wrapper')">
-        <div :class="bem('reason-title')">
+      <div v-if="think" :class="bem('think-wrapper')">
+        <div :class="bem('think-title')">
           <div>深度思考</div>
-          <Icon type="&#xe69b;" :class="bem('reason-collapse')" :rotate="collapse.reason ? 180 : 0" @click="handleReasonCollapse" />
+          <Icon type="&#xe69b;" :class="bem('think-collapse')" :rotate="collapse.think ? 180 : 0" @click="handleThinkCollapse" />
         </div>
-        <div v-show="!collapse.reason" :class="bem('reason')">{{ typedReasonContent }}</div>
+        <div v-show="!collapse.think" :class="bem('think')">{{ typedThink }}</div>
       </div>
 
       <!-- 回答 -->
@@ -37,28 +29,28 @@ import { Icon } from '../Icon';
 import useTyping from './hooks/useTyping';
 import MessageRender from './components/MessageRender.vue';
 
-const props = withDefaults(defineProps<BubbleTextProps>(), { typing: false, content: '', reasonContent: '', isCollapse: true });
+const props = withDefaults(defineProps<BubbleTextProps>(), { typing: false, content: '', think: '', isCollapse: true });
 
 const emit = defineEmits<{ (e: 'actions', options: BubbleTextActionOptions): void }>();
 
 const _content = computed(() => props.content);
 
-const _reasonContent = computed(() => props.reasonContent);
+const _think = computed(() => props.think);
 
 const [typedContent, isContentTyping] = useTyping(() => props.typing, _content);
 
-const [typedReasonContent, isReasonContentTyping] = useTyping(() => props.typing, _reasonContent);
+const [typedThink, isThinkTyping] = useTyping(() => props.typing, _think);
 
-const isTyping = computed(() => isContentTyping.value || isReasonContentTyping.value);
-
-const streamStatus = computed(() => (isTyping.value ? 'output' : 'complete'));
+const isTyping = computed(() => isContentTyping.value || isThinkTyping.value);
+// eslint-disable-next-line no-nested-ternary
+const _state = computed(() => (props.state !== 'complete' ? props.state : isTyping.value ? 'output' : 'complete'));
 
 const [name, bem] = createNamespace('bubble-text');
 
-const collapse = reactive({ reason: false });
+const collapse = reactive({ think: false });
 
-function handleReasonCollapse() {
-  collapse.reason = !collapse.reason;
+function handleThinkCollapse() {
+  collapse.think = !collapse.think;
 }
 
 function handleBubbleAction(options) {
@@ -79,7 +71,7 @@ watch(
   line-height: 26px;
 }
 
-.m-bubble-text__reason-title {
+.m-bubble-text__think-title {
   display: flex;
   align-items: center;
   font-size: 14px;
@@ -88,13 +80,13 @@ watch(
   color: #666;
 }
 
-.m-bubble-text__reason-collapse {
+.m-bubble-text__think-collapse {
   padding: 0 10px 0 5px;
   font-size: 12px;
   line-height: 1;
 }
 
-.m-bubble-text__reason {
+.m-bubble-text__think {
   position: relative;
   padding-left: 14px;
   margin: 10px 0;
