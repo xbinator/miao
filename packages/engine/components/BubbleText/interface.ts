@@ -17,6 +17,8 @@ export interface BubbleTextProps extends BubbleProps {
   content?: string;
 
   think?: string;
+
+  isMarkdown?: boolean;
 }
 
 export type BubbleTextActionOptions = BubbleActionOptions | { name: 'typing-complete' };

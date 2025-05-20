@@ -24,13 +24,13 @@ function toggleCollapse() {
 .m-button-collapse {
   position: relative;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   height: 36px;
   margin: 10px 12px;
-  border-radius: 18px;
   font-size: 12px;
   background: #f8f8f8;
+  border-radius: 18px;
 
   &.m-button-collapse--active {
     &::before {
@@ -39,9 +39,9 @@ function toggleCollapse() {
       right: 0;
       left: 0;
       height: 28px;
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #fff 100%);
-      transform: translateY(-100%);
       content: '';
+      background: linear-gradient(180deg, rgb(255 255 255 / 0%) 0%, #fff 100%);
+      transform: translateY(-100%);
     }
   }
 }
