@@ -1,14 +1,14 @@
 import { computed, nextTick, reactive, Ref, toValue, watch, type MaybeRefOrGetter } from 'vue';
 import { BubbleProps, CollapseOptions } from '../interface';
 
-type State = MaybeRefOrGetter<Pick<BubbleProps, 'isCollapse' | 'status'>>;
+type State = MaybeRefOrGetter<Pick<BubbleProps, 'isCollapse' | 'state'>>;
 
 function useCollapse(el: Ref<HTMLElement | undefined>, state: State, optiosn?: CollapseOptions) {
   const { maxHeight = 200, defaultValue = false } = optiosn || {};
 
   const collapse = reactive({ value: false, visible: defaultValue });
 
-  const _status = computed(() => toValue(state).status);
+  const _state = computed(() => toValue(state).state);
   const _isCollapse = computed(() => toValue(state).isCollapse);
 
   const toggleCollapse = () => {
@@ -18,7 +18,7 @@ function useCollapse(el: Ref<HTMLElement | undefined>, state: State, optiosn?: C
   };
 
   const updateShowCollapse = () => {
-    if (!el.value || _status.value !== 'complete' || !_isCollapse.value) return;
+    if (!el.value || _state.value !== 'complete' || !_isCollapse.value) return;
 
     collapse.visible = el.value.scrollHeight > maxHeight;
   };
@@ -31,7 +31,7 @@ function useCollapse(el: Ref<HTMLElement | undefined>, state: State, optiosn?: C
   };
 
   watch(
-    () => _status.value,
+    () => _state.value,
     () => nextTick(updateShowCollapse),
     { immediate: true }
   );
