@@ -77,18 +77,18 @@ function handleClick(record: BaseTool) {
 
 .m-bubble-toolbar__left {
   display: flex;
+  gap: 4px;
   align-items: center;
   height: 40px;
-  gap: 4px;
   padding: 0 6px;
-  border-radius: 12px;
   background: #fff;
+  border-radius: 12px;
 }
 
 .m-bubble-toolbar__button {
   padding: 6px;
   font-size: 18px;
-  color: rgba(0, 0, 0, 0.5);
+  color: rgb(0 0 0 / 50%);
   background-color: transparent;
 
   &.m-bubble-toolbar__button--like {
