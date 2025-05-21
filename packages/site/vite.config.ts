@@ -42,7 +42,7 @@ export default ({ mode }: ConfigEnv): UserConfig => {
     plugins: [
       vue({ include: [/\.vue$/, /\.md$/] }),
       vueJsx(),
-      MarkdownRoutes('views/components'),
+      MarkdownRoutes('../engine/components'),
       MarkdownTransform(),
       Markdown({
         markdownItSetup: async (md) => {

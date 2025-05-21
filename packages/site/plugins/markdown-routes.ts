@@ -11,7 +11,7 @@ interface RouteConfig {
 }
 
 // 生成路由配置函数
-function generateRoutesFromMd(dirPath: string, mdDir: string) {
+function generateRoutesFromMd(dirPath: string) {
   const defaults: RouteConfig[] = [];
   const demos: RouteConfig[] = [];
   const files = fs.readdirSync(dirPath);
@@ -33,13 +33,13 @@ function generateRoutesFromMd(dirPath: string, mdDir: string) {
 
     meta = { title, ...meta, name };
 
-    const route = { path: name, component: `() => import('${path.posix.join('@/', mdDir, file, 'index.md')}')`, meta };
+    const route = { path: name, component: `() => import('${path.posix.join(dirPath, file, 'index.md')}')`, meta };
 
-    const demo = { path: name, component: `() => import('${path.posix.join('@/', mdDir, file, 'demo/index.vue')}')`, meta: { title } };
+    const demo = { path: name, component: `() => import('${path.posix.join(dirPath, file, 'demo.vue')}')`, meta: { title } };
 
     defaults.push(route);
 
-    fs.existsSync(path.join(dirPath, file, 'demo/index.vue')) && demos.push(demo);
+    fs.existsSync(path.join(dirPath, file, 'demo.vue')) && demos.push(demo);
   }
 
   return { defaults, demos };
@@ -50,9 +50,9 @@ function MarkdownRoutes(mdDir: string): Plugin {
   return {
     name: 'markdown-routes',
     configResolved(config) {
-      const resolvedMdDir = path.resolve(config.root, 'src', mdDir);
+      const resolvedMdDir = path.resolve(config.root, mdDir);
 
-      const { defaults, demos } = generateRoutesFromMd(resolvedMdDir, mdDir);
+      const { defaults, demos } = generateRoutesFromMd(resolvedMdDir);
 
       // 将生成的路由配置注入到 Vite 配置中
       const routeConfigFile = path.resolve(config.root, 'src/router', 'demo-routes.ts');

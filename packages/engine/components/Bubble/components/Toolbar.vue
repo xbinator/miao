@@ -9,12 +9,12 @@
 </template>
 
 <script setup lang="ts">
-import type { BubbleToolbarProps, BubbleActionOptions, BubbleToolbar } from './interface';
+import type { BubbleToolbarProps, BubbleActionOptions, BubbleToolbar } from '../interface';
 import { computed } from 'vue';
 import { isBoolean, values } from 'lodash-es';
-import { createNamespace, Mods } from '../utils';
-import { Icon } from '../Icon';
-import { Feedback } from './constant/index';
+import { createNamespace, Mods } from '../../utils';
+import { Icon } from '../../Icon';
+import { Feedback } from '../constant/index';
 
 interface BaseTool {
   key: BubbleToolbar;

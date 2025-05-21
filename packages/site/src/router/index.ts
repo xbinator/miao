@@ -27,7 +27,14 @@ const routes: RouteRecordRaw[] = [
     path: '/components',
     component: () => import('@/layout/index.vue'),
     redirect: '/components/overview',
-    children: components
+    children: [
+      {
+        path: 'overview',
+        component: () => import('@/views/overview/index.md'),
+        meta: { title: '快速上手', group: { title: '组件总览', order: 0 } }
+      },
+      ...components
+    ]
   },
   {
     path: '/demo',

@@ -7,8 +7,8 @@
 </template>
 
 <script setup lang="ts">
-import type { BubbleAvatarProps } from './interface';
-import { createNamespace } from '../utils';
+import type { BubbleAvatarProps } from '../interface';
+import { createNamespace } from '../../utils';
 
 withDefaults(defineProps<BubbleAvatarProps>(), { title: '', src: '' });
 

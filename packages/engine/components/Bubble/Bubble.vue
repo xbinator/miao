@@ -40,9 +40,9 @@ import type { BubbleProps, BubbleActionOptions } from './interface';
 import { computed, ref } from 'vue';
 import { isObject } from 'lodash-es';
 import { createNamespace } from '../utils';
-import Avatar from './Avatar.vue';
-import Toolbar from './Toolbar.vue';
 import useCollapse from './hooks/useCollapse';
+import Avatar from './components/Avatar.vue';
+import Toolbar from './components/Toolbar.vue';
 import ButtonCollapse from './components/ButtonCollapse.vue';
 import Loading from './components/Loading.vue';
 
