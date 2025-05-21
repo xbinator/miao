@@ -1,0 +1,1 @@
+import{aE as e,aC as o}from"./index-8hLDyTlh.js";const a={class:"markdown-body"},m={__name:"getting-started",setup(r,{expose:t}){return t({frontmatter:{}}),(n,c)=>(o(),e("div",a))}};export{m as default};
