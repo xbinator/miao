@@ -31,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import type { SenderProps, SenderActionOptions, SenderResult } from './interface';
+import type { SenderProps, SenderActionOptions, SenderSendEvent } from './interface';
 import { ref } from 'vue';
 import { useTextareaAutosize } from '@vueuse/core';
 import { createNamespace } from '../utils';
@@ -49,7 +49,7 @@ const input = defineModel<string>('value', { default: '' });
 
 const emit = defineEmits<{
   (e: 'cancel'): void;
-  (e: 'send', result: SenderResult): void;
+  (e: 'send', event: SenderSendEvent): void;
   (e: 'actions', options: SenderActionOptions): void;
 }>();
 

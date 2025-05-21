@@ -34,7 +34,7 @@ export interface BubbleProps extends BubbleToolbarProps {
   // 尺寸
   size?: 'auto' | 'fill';
   // 流式数据状态
-  status?: 'wait' | 'output' | 'complete';
+  state?: 'wait' | 'output' | 'complete';
 }
 
 export interface BubbleActionOptions {

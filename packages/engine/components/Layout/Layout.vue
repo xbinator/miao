@@ -34,7 +34,7 @@
 
 <script setup lang="ts">
 import type { LayoutProps, LayoutActionOptions } from './interface';
-import type { SenderResult } from '../Sender/interface';
+import type { SenderSendEvent } from '../Sender/interface';
 import { ref, nextTick } from 'vue';
 import { useEventListener } from '@vueuse/core';
 import { createNamespace } from '../utils';
@@ -56,7 +56,7 @@ const props = withDefaults(defineProps<LayoutProps>(), {
 
 const emit = defineEmits<{
   (e: 'load'): void;
-  (e: 'send', result: SenderResult): void;
+  (e: 'send', result: SenderSendEvent): void;
   (e: 'cancel'): void;
   (e: 'actions', options: LayoutActionOptions): void;
 }>();
@@ -95,7 +95,7 @@ function handleLoadData() {
   emit('load');
 }
 
-function handleMessageSend(result: SenderResult) {
+function handleMessageSend(result: SenderSendEvent) {
   emit('send', result);
 }
 

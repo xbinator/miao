@@ -66,7 +66,7 @@ const skills = [{ text: '智能体1' }, { text: '智能体2' }, { text: '智能�
 | 事件   | 说明             | 回调参数                      |
 | ------ | ---------------- | ----------------------------- |
 | load   | 滚动下拉加载事件 | () => void                    |
-| send   | 发送事件         | (result: SenderResult)=> void |
+| send   | 发送事件         | (result: SenderSendEvent)=> void |
 | cancel | 取消事件         | () => void                    |
 
 ### SkillProps 类型定义
@@ -77,4 +77,4 @@ const skills = [{ text: '智能体1' }, { text: '智能体2' }, { text: '智能�
 | icon | 按钮图标 | string                 | -         |
 | type | 按钮类型 | 'primary' \| 'default' | 'default' |
 
-`SenderResult` 事件请参考 [Sender.send 事件](./sender)
+`SenderSendEvent` 事件请参考 [Sender.send 事件](./sender)

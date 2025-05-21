@@ -121,7 +121,7 @@ app.use(Bubble);
 | isCollapse      | 展示收起按钮                                     | boolean                                                 | false    |
 | collapseOptions | 展示收起按钮配置                                 | CollapseOptions                                         |          |
 | size            | 气泡尺寸设定                                     | 'auto' \| 'fill'                                        | 'auto'   |
-| status          | 当前流式数据状态，用于可以折叠判断               | 'wait' \| 'output' \| 'complete'                        | complete |
+| state          | 当前流式数据状态，用于可以折叠判断               | 'wait' \| 'output' \| 'complete'                        | complete |
 
 ### 事件
 

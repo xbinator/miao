@@ -4,19 +4,21 @@
       <slot name="avatar"></slot>
     </template>
 
-    <div :class="[name]">
-      <!-- 深度思考 -->
-      <div v-if="think" :class="bem('think')">
+    <!-- 深度思考 -->
+    <template v-if="think" #top>
+      <div :class="bem('think')">
         <div :class="bem('think-toggle')" @click="handleReasonCollapse">
           <div :class="bem('think-title')">深度思考</div>
           <Icon type="&#xe69b;" :class="bem('think-collapse')" :rotate="collapse.think ? 180 : 0" />
         </div>
         <div v-show="!collapse.think" :class="bem('think-content')">
-          <MessageRender :effect="effect" :content="typedThink" :is-markdown="isMarkdown" />
+          <MessageRender :content="typedThink" :is-markdown="isMarkdown" />
         </div>
       </div>
-      <!-- 回答 -->
-      <MessageRender :effect="effect" :content="typedContent" :is-markdown="isMarkdown" />
+    </template>
+
+    <div :class="bem('content')">
+      <MessageRender :content="typedContent" :is-markdown="isMarkdown" />
     </div>
   </Bubble>
 </template>
@@ -46,11 +48,9 @@ const isTyping = computed(() => isContentTyping.value || isThinkTyping.value);
 // eslint-disable-next-line no-nested-ternary
 const _state = computed(() => (props.state !== 'complete' ? props.state : isTyping.value ? 'output' : 'complete'));
 
-const [name, bem] = createNamespace('bubble-text');
+const [, bem] = createNamespace('bubble-text');
 
 const collapse = reactive({ think: false });
-
-const effect = computed(() => (isTyping.value ? 'typing' : null));
 
 function handleReasonCollapse() {
   collapse.think = !collapse.think;
@@ -68,15 +68,15 @@ watch(
 </script>
 
 <style lang="less">
-.m-bubble-text {
-  margin: 10px 12px;
-  font-size: 14px;
+.m-bubble-text__think {
+  margin: 10px 12px 0;
   line-height: 26px;
 }
 
 .m-bubble-text__think-toggle {
-  display: inline-flex;
+  display: flex;
   align-items: center;
+  width: fit-content;
   height: 30px;
   padding: 0 8px;
   font-size: 12px;
@@ -90,7 +90,7 @@ watch(
   margin-right: 5px;
 }
 
-.m-bubble-text__thinkcollapse {
+.m-bubble-text__think-collapse {
   font-size: 12px;
   line-height: 1;
 }
@@ -98,7 +98,7 @@ watch(
 .m-bubble-text__think-content {
   position: relative;
   padding-left: 14px;
-  margin: 10px 0;
+  margin-top: 10px;
   font-size: 12px;
   color: #666;
 
@@ -112,5 +112,11 @@ watch(
     background: #eee;
     border-radius: 1px;
   }
+}
+
+.m-bubble-text__content {
+  padding: 10px 12px;
+  font-size: 14px;
+  line-height: 26px;
 }
 </style>

@@ -12,10 +12,10 @@
       @touchend="onTouchEnd"
       @touchcancel="onTouchEnd"
     >
-      <div v-if="!disabled" :class="[bem('head', state.status)]">
-        <template v-if="['normal', 'pulling'].includes(state.status)">下拉查看历史消息</template>
-        <template v-else-if="state.status === 'loading'">加载中...</template>
-        <template v-else-if="state.status === 'loosing'">释放即可刷新...</template>
+      <div v-if="!disabled" :class="[bem('head', state.state)]">
+        <template v-if="['normal', 'pulling'].includes(state.state)">下拉查看历史消息</template>
+        <template v-else-if="state.state === 'loading'">加载中...</template>
+        <template v-else-if="state.state === 'loosing'">释放即可刷新...</template>
       </div>
 
       <slot></slot>
@@ -33,7 +33,7 @@ import { useScrollParent, getScrollTop } from './hooks/useScrollParent';
 
 const [, bem] = createNamespace('pull-refresh');
 
-type PullRefreshStatus = 'normal' | 'loading' | 'loosing' | 'pulling';
+type PullRefreshState = 'normal' | 'loading' | 'loosing' | 'pulling';
 
 const props = withDefaults(defineProps<PullRefreshProps>(), { headHeight: 50, successDuration: 500, animationDuration: 300 });
 // 是否处于加载中状态
@@ -48,14 +48,14 @@ const track = ref<HTMLElement>();
 const scrollParent = useScrollParent(root);
 
 const state = reactive({
-  status: 'normal' as PullRefreshStatus,
+  state: 'normal' as PullRefreshState,
   distance: 0,
   duration: 0
 });
 
 const touch = useTouch();
 
-const isTouchable = () => state.status !== 'loading' && !props.disabled;
+const isTouchable = () => state.state !== 'loading' && !props.disabled;
 
 function ease(distance: number) {
   let _distance = distance;
@@ -73,21 +73,21 @@ function ease(distance: number) {
   return Math.round(_distance);
 }
 
-function setStatus(distance: number, isLoading?: boolean) {
+function setState(distance: number, isLoading?: boolean) {
   const pullDistance = +(props.pullDistance || props.headHeight);
   state.distance = distance;
 
   if (isLoading) {
-    state.status = 'loading';
+    state.state = 'loading';
   } else if (distance === 0) {
-    state.status = 'normal';
+    state.state = 'normal';
   } else if (distance < pullDistance) {
-    state.status = 'pulling';
+    state.state = 'pulling';
   } else {
-    state.status = 'loosing';
+    state.state = 'loosing';
   }
 
-  emit('change', { status: state.status, distance });
+  emit('change', { state: state.state, distance });
 }
 
 function checkPosition(event: TouchEvent) {
@@ -124,7 +124,7 @@ function onTouchMove(event: TouchEvent) {
   if (reachTop && deltaY.value >= 0 && touch.isVertical()) {
     event.preventDefault();
 
-    setStatus(ease(deltaY.value));
+    setState(ease(deltaY.value));
   }
 }
 
@@ -132,14 +132,14 @@ function onTouchEnd() {
   if (reachTop && touch.deltaY.value && isTouchable()) {
     state.duration = +props.animationDuration;
 
-    if (state.status === 'loosing') {
-      setStatus(+props.headHeight, true);
+    if (state.state === 'loosing') {
+      setState(+props.headHeight, true);
 
       mode.value = true;
 
       nextTick(() => emit('refresh'));
     } else {
-      setStatus(0);
+      setState(0);
     }
   }
 }
@@ -150,9 +150,9 @@ watch(
     state.duration = +props.animationDuration;
 
     if (value) {
-      setStatus(+props.headHeight, true);
+      setState(+props.headHeight, true);
     } else {
-      setStatus(0, false);
+      setState(0, false);
     }
   }
 );

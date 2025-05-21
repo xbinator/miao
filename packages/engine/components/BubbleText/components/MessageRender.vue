@@ -1,5 +1,5 @@
 <template>
-  <div :class="name" :data-effect="effect" v-html="renderedContent"></div>
+  <div :class="name" v-html="renderedContent"></div>
 </template>
 
 <script setup lang="ts">
@@ -12,11 +12,9 @@ interface Props {
   isMarkdown?: boolean;
   // 文本内容
   content: string;
-  // 雾化效果
-  effect?: null | 'typing';
 }
 
-const props = withDefaults(defineProps<Props>(), { content: '', isMarkdown: false, effect: null });
+const props = withDefaults(defineProps<Props>(), { content: '', isMarkdown: false });
 
 const [name] = createNamespace('message-render');
 
@@ -65,29 +63,11 @@ const renderedContent = computed(() => {
   .hljs {
     border-radius: 6px;
   }
-}
 
-[data-effect='typing'] {
-  position: relative;
-  overflow: hidden;
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6,
-  p,
-  ol:last-child li,
-  ul:last-child li {
-    &:last-child::after {
-      position: absolute;
-      width: 80px;
-      height: 1.5em;
-      margin-left: -80px;
-      content: '';
-      background: linear-gradient(90deg, transparent, #fff);
-    }
+  hr {
+    height: 1px;
+    background-color: #ececec;
+    border: none;
   }
 }
 </style>

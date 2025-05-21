@@ -1,4 +1,4 @@
-import { ref } from 'vue';
+import { readonly, Ref, ref } from 'vue';
 import { getBytes, getLines, getMessages } from './parse';
 
 export type { EventSourceMessage } from './parse';
@@ -13,6 +13,8 @@ interface UseStreamRequestOptions<T> {
   onFinish?: () => void;
   // 发生错误时的回调
   onError?: (error: Error) => void;
+  // 接收到响应时的回调
+  onResponse?: (response: Response) => void;
 }
 
 interface UseStreamConfig {
@@ -20,6 +22,20 @@ interface UseStreamConfig {
   method?: 'GET' | 'POST';
   // 请求头
   headers?: HeadersInit;
+}
+
+export interface ReadableStreamInstance {
+  // 创建流请求
+  create: (options: UseStreamRequestOptions<any>) => Promise<void>;
+  // 中断流请求
+  abort: () => void;
+}
+
+export interface UseStreamHelpers {
+  // 是否正在加载中
+  loading: Readonly<Ref<boolean>>;
+  // 流请求方法
+  stream: ReadableStreamInstance;
 }
 
 export function isSpecialRequestBody(data: any) {
@@ -34,7 +50,7 @@ export function isBodyData(data: any) {
   return typeof data === 'string' || isSpecialRequestBody(data);
 }
 
-export function useStream<T = any>(url: string, config: UseStreamConfig = {}) {
+export function useStream<T = any>(url: string, config: UseStreamConfig = {}): UseStreamHelpers {
   const loading = ref(false);
 
   let abortController: AbortController | null = null;
@@ -44,7 +60,7 @@ export function useStream<T = any>(url: string, config: UseStreamConfig = {}) {
   const create = async (options: UseStreamRequestOptions<T> = {}) => {
     loading.value = true;
 
-    const { onMessage, onFinish, onError } = options;
+    const { onMessage, onFinish, onError, onResponse } = options;
 
     const headers = { 'Content-Type': 'application/json', ...config.headers };
 
@@ -56,6 +72,8 @@ export function useStream<T = any>(url: string, config: UseStreamConfig = {}) {
 
     try {
       const response = await fetch(url, { method, headers, body, signal: abortController.signal });
+
+      onResponse?.(response);
 
       if (!response.body) {
         throw new Error('Response body is null or not a stream');
@@ -80,7 +98,7 @@ export function useStream<T = any>(url: string, config: UseStreamConfig = {}) {
   };
 
   return {
-    loading,
+    loading: readonly(loading),
     stream: { create, abort }
   };
 }

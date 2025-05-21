@@ -21,7 +21,7 @@ withDefaults(defineProps<Props>(), { visible: false });
 const emit = defineEmits(['click']);
 
 function handleClick() {
-  emit('click', { behavior: 'smooth' });
+  emit('click', { behavior: 'auto' });
 }
 </script>
 

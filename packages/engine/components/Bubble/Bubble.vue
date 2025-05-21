@@ -17,6 +17,8 @@
         </template>
         <!-- 气泡容器 -->
         <div :class="bem('container')">
+          <slot name="top"></slot>
+
           <div ref="contentRef" :class="bem('content', { collapse: collapse.value })">
             <slot></slot>
           </div>
@@ -27,7 +29,7 @@
     </div>
 
     <!-- 底部工具栏 -->
-    <Toolbar v-if="status === 'complete' && placement === 'left'" :toolbar="toolbar" @actions="handleToolAction" />
+    <Toolbar v-if="state === 'complete' && placement === 'left'" :toolbar="toolbar" @actions="handleToolAction" />
 
     <slot name="footer"></slot>
   </div>
@@ -44,7 +46,7 @@ import useCollapse from './hooks/useCollapse';
 import ButtonCollapse from './components/ButtonCollapse.vue';
 import Loading from './components/Loading.vue';
 
-const props = withDefaults(defineProps<BubbleProps>(), { placement: 'left', avatar: undefined, status: 'complete', collapse: undefined, size: 'auto' });
+const props = withDefaults(defineProps<BubbleProps>(), { placement: 'left', avatar: undefined, state: 'complete', collapse: undefined, size: 'auto' });
 
 const emit = defineEmits<{ (e: 'actions', options: BubbleActionOptions): void }>();
 
