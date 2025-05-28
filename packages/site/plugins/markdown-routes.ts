@@ -33,9 +33,9 @@ function generateRoutesFromMd(dirPath: string) {
 
     meta = { title, ...meta, name };
 
-    const route = { path: name, component: `() => import('${path.posix.join(dirPath, file, 'index.md')}')`, meta };
+    const route = { path: name, component: `() => import('${path.posix.join(dirPath, file, 'index.md').replace(/\\/g, '/')}')`, meta };
 
-    const demo = { path: name, component: `() => import('${path.posix.join(dirPath, file, 'demo.vue')}')`, meta: { title } };
+    const demo = { path: name, component: `() => import('${path.posix.join(dirPath, file, 'demo.vue').replace(/\\/g, '/')}')`, meta: { title } };
 
     defaults.push(route);
 
