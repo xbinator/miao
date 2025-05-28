@@ -1,3 +1,4 @@
+<!-- eslint-disable max-len -->
 <template>
   <div :class="bem('wrapper')">
     <div :class="bem({ hidden: visible })" @click="handleClick">
@@ -14,14 +15,16 @@ const [, bem] = createNamespace('bottom-button');
 
 interface Props {
   visible: boolean;
+
+  loading: boolean;
 }
 
-withDefaults(defineProps<Props>(), { visible: false });
+const props = withDefaults(defineProps<Props>(), { visible: false });
 
 const emit = defineEmits(['click']);
 
 function handleClick() {
-  emit('click', { behavior: 'auto' });
+  emit('click', { behavior: props.loading ? 'auto' : 'smooth' });
 }
 </script>
 

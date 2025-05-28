@@ -6,7 +6,7 @@
       </div>
     </PullRefresh>
     <!-- 回到底部 -->
-    <ToBottomButton :visible="isBackBottom" @click="setScrollBottom" />
+    <ToBottomButton :visible="isBackBottom" :loading="loading" :finished="finished" @click="setScrollBottom" />
 
     <div :class="bem('footer')">
       <slot name="footer">
