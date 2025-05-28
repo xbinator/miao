@@ -1,0 +1,1 @@
+import{aE as o,aC as a,aL as r}from"./index-74UM7pkD.js";const s={class:"markdown-body"},_={__name:"index",setup(n,{expose:t}){return t({frontmatter:{}}),(m,e)=>(a(),o("div",s,e[0]||(e[0]=[r("p",null,"Miao AI（妙手 AI）是一个基于 Vue3 的组件库，旨在简化 AI 对话系统的开发流程，提供高效、智能的 AI 交互体验。旨在为开发者提供一套简洁、强大、可定制的 AI 交互组件，加速 AI 聊天应用的开发。",-1)])))}};export{_ as default};
