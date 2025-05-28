@@ -8,7 +8,7 @@
     <template v-if="think" #top>
       <div :class="bem('think')">
         <div :class="bem('think-toggle')" @click="handleReasonCollapse">
-          <div :class="bem('think-title')">深度思考</div>
+          <div :class="bem('think-title')">{{ thinkTitle || '深度思考' }}</div>
           <Icon type="&#xe69b;" :class="bem('think-collapse')" :rotate="collapse.think ? 180 : 0" />
         </div>
         <div v-show="!collapse.think" :class="bem('think-content')">
@@ -118,5 +118,9 @@ watch(
   padding: 10px 12px;
   font-size: 14px;
   line-height: 26px;
+
+  &:empty {
+    padding: 0;
+  }
 }
 </style>

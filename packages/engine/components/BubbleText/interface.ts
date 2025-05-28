@@ -18,6 +18,8 @@ export interface BubbleTextProps extends BubbleProps {
 
   think?: string;
 
+  thinkTitle?: string;
+
   isMarkdown?: boolean;
 }
 
